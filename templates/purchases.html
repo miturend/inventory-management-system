@@ -12,7 +12,7 @@ Purchases
 
 <a href="{{ url_for('purchases.add_purchase') }}">
 
-<button>New Purchase</button>
+<button class="btn btn-primary">New Purchase</button>
 
 </a>
 
@@ -44,7 +44,7 @@ Purchases
     <td>{{ purchase.notes }}</td>
 
     <td>
-        <a href="{{ url_for('purchases.purchase_items', purchase_id=purchase.PurchaseID) }}">
+        <a href="{{ url_for('purchases.purchase_items', purchase_id=purchase.PurchaseID) }}" class="btn btn-warning">
             View Items
         </a>
     </td>

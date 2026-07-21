@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}
+Activity Logs
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Activity Logs</h2>
+
+<div class="card">
+
+    <div class="card-body">
+
+        <table class="table table-striped table-hover">
+
+            <thead class="table-dark">
+
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Action</th>
+                    <th>Date & Time</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for log in logs %}
+
+                <tr>
+
+                    <td>{{ log.LogID }}</td>
+
+                    <td>{{ log.Username }}</td>
+
+                    <td>{{ log.Action }}</td>
+
+                    <td>{{ log.CreatedDate }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,51 +1,160 @@
 {% extends "base.html" %}
 
 {% block title %}
-Customers
+Dashboard
 {% endblock %}
 
 {% block content %}
 
-<div class="sidebar">
+<style>
+    .stat-card {
+        border: none;
+        border-radius: 14px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        overflow: hidden;
+    }
 
-    <h2>OKEYSAM</h2>
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
 
-    <a href="#">Dashboard</a>
-    <a href="#">Products</a>
-    <a href="#">Customers</a>
-    <a href="#">Suppliers</a>
-    <a href="#">Purchases</a>
-    <a href="#">Sales</a>
-    <a href="#">Reports</a>
-    <a href="#">Expenses</a>
+    .stat-card .card-body {
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
 
-</div>
+    .stat-icon {
+        width: 52px;
+        height: 52px;
+        min-width: 52px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .stat-icon svg {
+        width: 26px;
+        height: 26px;
+        fill: none;
+        stroke: #fff;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        color: #888;
+        margin-bottom: 0.15rem;
+        font-weight: 500;
+    }
+
+    .stat-value {
+        font-size: 1.9rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+    }
+
+    .bg-blue { background: #1e3c72; }
+    .bg-green { background: #16a34a; }
+    .bg-orange { background: #ea580c; }
+    .bg-purple { background: #7c3aed; }
+</style>
 
 <div class="main">
 
-    <h1>Dashboard</h1>
+    <h2 class="mb-4">Dashboard</h2>
 
-    <div class="cards">
+    <div class="row g-3">
 
-        <div class="card">
-            <h3>Total Products</h3>
-            <h2>{{ total_products }}</h2>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <div class="stat-icon bg-blue">
+                        <svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0v10l-8 4m8-14l-8 4m0 10l-8-4V7m8 14V11"></path></svg>
+                    </div>
+                    <div>
+                        <p class="stat-label">Total Products</p>
+                        <h2 class="stat-value">{{ total_products }}</h2>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h3>Total Customers</h3>
-            <h2>{{ total_customers }}</h2>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <div class="stat-icon bg-green">
+                        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </div>
+                    <div>
+                        <p class="stat-label">Total Customers</p>
+                        <h2 class="stat-value">{{ total_customers }}</h2>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h3>Total Suppliers</h3>
-            <h2>{{ total_suppliers }}</h2>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <div class="stat-icon bg-orange">
+                        <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><path d="M16 8h4l3 3v5h-7V8z"></path><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                    </div>
+                    <div>
+                        <p class="stat-label">Total Suppliers</p>
+                        <h2 class="stat-value">{{ total_suppliers }}</h2>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h3>Low Stock</h3>
-            <h2>Coming Soon</h2>
+        <div class="col-md-3">
+            <div class="card stat-card">
+                <div class="card-body">
+                    <div class="stat-icon bg-purple">
+                        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    </div>
+                    <div>
+                        <p class="stat-label">Total Stock</p>
+                        <h2 class="stat-value">{{ total_stock }}</h2>
+                    </div>
+                    </div>
+            </div>
         </div>
+        <div class="col-md-3">
+
+    <div class="card stat-card">
+
+        <div class="card-body">
+
+            <div class="stat-icon bg-danger">
+                ⚠️
+            </div>
+
+            <div>
+
+                <p class="stat-label">
+                    Low Stock Items
+                </p>
+
+                <h2 class="stat-value">
+                    {{ low_stock }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
     </div>
 

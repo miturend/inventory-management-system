@@ -1,11 +1,16 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from database import get_connection
+from utils.auth_helpers import login_required, admin_required
+from utils.activity import log_activity
 
 products = Blueprint("products", __name__)
 
 
-# View all products
+# ==========================
+# View Products
+# ==========================
 @products.route("/products")
+@login_required
 def view_products():
 
     search = request.args.get("search", "")
@@ -16,10 +21,11 @@ def view_products():
     if search:
 
         cursor.execute("""
-            SELECT ProductID,
-                   ProductName,
-                   SellingPrice,
-                   Stock
+            SELECT
+                ProductID,
+                ProductName,
+                SellingPrice,
+                Stock
             FROM Products
             WHERE ProductName LIKE %s
             ORDER BY ProductID DESC
@@ -28,10 +34,11 @@ def view_products():
     else:
 
         cursor.execute("""
-            SELECT ProductID,
-                   ProductName,
-                   SellingPrice,
-                   Stock
+            SELECT
+                ProductID,
+                ProductName,
+                SellingPrice,
+                Stock
             FROM Products
             ORDER BY ProductID DESC
         """)
@@ -48,8 +55,11 @@ def view_products():
     )
 
 
-# Add a new product
+# ==========================
+# Add Product
+# ==========================
 @products.route("/products/add", methods=["GET", "POST"])
+@admin_required
 def add_product():
 
     if request.method == "POST":
@@ -63,21 +73,41 @@ def add_product():
 
         cursor.execute("""
             INSERT INTO Products
-            (ProductName, SellingPrice, Stock)
-            VALUES (%s, %s, %s)
-        """, (product_name, selling_price, stock))
+            (
+                ProductName,
+                SellingPrice,
+                Stock
+            )
+            VALUES
+            (%s, %s, %s)
+        """, (
+            product_name,
+            selling_price,
+            stock
+        ))
 
         connection.commit()
 
         cursor.close()
         connection.close()
 
+        log_activity(
+            "ADD PRODUCT",
+            f"Added product: {product_name}"
+        )
+
+        flash("Product added successfully.", "success")
+
         return redirect(url_for("products.view_products"))
 
     return render_template("add_product.html")
 
-#edit Product
+
+# ==========================
+# Edit Product
+# ==========================
 @products.route("/products/edit/<int:product_id>", methods=["GET", "POST"])
+@admin_required
 def edit_product(product_id):
 
     connection = get_connection()
@@ -91,16 +121,29 @@ def edit_product(product_id):
 
         cursor.execute("""
             UPDATE Products
-            SET ProductName = %s,
+            SET
+                ProductName = %s,
                 SellingPrice = %s,
                 Stock = %s
             WHERE ProductID = %s
-        """, (product_name, selling_price, stock, product_id))
+        """, (
+            product_name,
+            selling_price,
+            stock,
+            product_id
+        ))
 
         connection.commit()
 
         cursor.close()
         connection.close()
+
+        log_activity(
+            "EDIT PRODUCT",
+            f"Updated product: {product_name}"
+        )
+
+        flash("Product updated successfully.", "success")
 
         return redirect(url_for("products.view_products"))
 
@@ -120,22 +163,47 @@ def edit_product(product_id):
         product=product
     )
 
-    #Delete Product
 
+# ==========================
+# Delete Product
+# ==========================
 @products.route("/products/delete/<int:product_id>")
+@admin_required
 def delete_product(product_id):
 
     connection = get_connection()
-    cursor = connection.cursor()
+    cursor = connection.cursor(dictionary=True)
+
+
+    cursor.execute("""
+        SELECT ProductName
+        FROM Products
+        WHERE ProductID = %s
+    """, (product_id,))
+
+
+    product = cursor.fetchone()
+
 
     cursor.execute("""
         DELETE FROM Products
         WHERE ProductID = %s
     """, (product_id,))
 
+
     connection.commit()
 
     cursor.close()
     connection.close()
+
+
+    log_activity(
+        "DELETE PRODUCT",
+        f"Deleted product: {product['ProductName']}"
+    )
+
+
+    flash("Product deleted successfully.", "success")
+
 
     return redirect(url_for("products.view_products"))

@@ -1,10 +1,15 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from database import get_connection
+from utils.auth_helpers import login_required, admin_required
 
 customers = Blueprint("customers", __name__)
 
 
+# ==========================
+# View Customers
+# ==========================
 @customers.route("/customers")
+@login_required
 def view_customers():
 
     search = request.args.get("search", "")
@@ -41,7 +46,11 @@ def view_customers():
     )
 
 
+# ==========================
+# Add Customer
+# ==========================
 @customers.route("/customers/add", methods=["GET", "POST"])
+@admin_required
 def add_customer():
 
     if request.method == "POST":
@@ -55,21 +64,36 @@ def add_customer():
 
         cursor.execute("""
             INSERT INTO Customers
-            (CustomerName, Phone, Address)
-            VALUES (%s,%s,%s)
-        """, (name, phone, address))
+            (
+                CustomerName,
+                Phone,
+                Address
+            )
+            VALUES
+            (%s, %s, %s)
+        """, (
+            name,
+            phone,
+            address
+        ))
 
         connection.commit()
 
         cursor.close()
         connection.close()
 
+        flash("Customer added successfully.", "success")
+
         return redirect(url_for("customers.view_customers"))
 
     return render_template("add_customer.html")
 
 
-@customers.route("/customers/edit/<int:customer_id>", methods=["GET","POST"])
+# ==========================
+# Edit Customer
+# ==========================
+@customers.route("/customers/edit/<int:customer_id>", methods=["GET", "POST"])
+@admin_required
 def edit_customer(customer_id):
 
     connection = get_connection()
@@ -83,24 +107,32 @@ def edit_customer(customer_id):
 
         cursor.execute("""
             UPDATE Customers
-            SET CustomerName=%s,
-                Phone=%s,
-                Address=%s
-            WHERE CustomerID=%s
-        """,(name,phone,address,customer_id))
+            SET
+                CustomerName = %s,
+                Phone = %s,
+                Address = %s
+            WHERE CustomerID = %s
+        """, (
+            name,
+            phone,
+            address,
+            customer_id
+        ))
 
         connection.commit()
 
         cursor.close()
         connection.close()
 
+        flash("Customer updated successfully.", "success")
+
         return redirect(url_for("customers.view_customers"))
 
     cursor.execute("""
         SELECT *
         FROM Customers
-        WHERE CustomerID=%s
-    """,(customer_id,))
+        WHERE CustomerID = %s
+    """, (customer_id,))
 
     customer = cursor.fetchone()
 
@@ -113,7 +145,11 @@ def edit_customer(customer_id):
     )
 
 
+# ==========================
+# Delete Customer
+# ==========================
 @customers.route("/customers/delete/<int:customer_id>")
+@admin_required
 def delete_customer(customer_id):
 
     connection = get_connection()
@@ -121,12 +157,14 @@ def delete_customer(customer_id):
 
     cursor.execute("""
         DELETE FROM Customers
-        WHERE CustomerID=%s
-    """,(customer_id,))
+        WHERE CustomerID = %s
+    """, (customer_id,))
 
     connection.commit()
 
     cursor.close()
     connection.close()
+
+    flash("Customer deleted successfully.", "success")
 
     return redirect(url_for("customers.view_customers"))

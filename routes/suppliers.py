@@ -1,10 +1,15 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from database import get_connection
+from utils.auth_helpers import login_required, admin_required
 
 suppliers = Blueprint("suppliers", __name__)
 
 
+# ==========================
+# View Suppliers
+# ==========================
 @suppliers.route("/suppliers")
+@login_required
 def view_suppliers():
 
     search = request.args.get("search", "")
@@ -41,7 +46,11 @@ def view_suppliers():
     )
 
 
+# ==========================
+# Add Supplier
+# ==========================
 @suppliers.route("/suppliers/add", methods=["GET", "POST"])
+@admin_required
 def add_supplier():
 
     if request.method == "POST":
@@ -55,21 +64,36 @@ def add_supplier():
 
         cursor.execute("""
             INSERT INTO Suppliers
-            (SupplierName, Phone, Address)
-            VALUES (%s,%s,%s)
-        """, (name, phone, address))
+            (
+                SupplierName,
+                Phone,
+                Address
+            )
+            VALUES
+            (%s, %s, %s)
+        """, (
+            name,
+            phone,
+            address
+        ))
 
         connection.commit()
 
         cursor.close()
         connection.close()
 
+        flash("Supplier added successfully.", "success")
+
         return redirect(url_for("suppliers.view_suppliers"))
 
     return render_template("add_supplier.html")
 
 
-@suppliers.route("/suppliers/edit/<int:supplier_id>", methods=["GET","POST"])
+# ==========================
+# Edit Supplier
+# ==========================
+@suppliers.route("/suppliers/edit/<int:supplier_id>", methods=["GET", "POST"])
+@admin_required
 def edit_supplier(supplier_id):
 
     connection = get_connection()
@@ -83,23 +107,31 @@ def edit_supplier(supplier_id):
 
         cursor.execute("""
             UPDATE Suppliers
-            SET SupplierName=%s,
-                Phone=%s,
-                Address=%s
-            WHERE SupplierID=%s
-        """, (name, phone, address, supplier_id))
+            SET
+                SupplierName = %s,
+                Phone = %s,
+                Address = %s
+            WHERE SupplierID = %s
+        """, (
+            name,
+            phone,
+            address,
+            supplier_id
+        ))
 
         connection.commit()
 
         cursor.close()
         connection.close()
 
+        flash("Supplier updated successfully.", "success")
+
         return redirect(url_for("suppliers.view_suppliers"))
 
     cursor.execute("""
         SELECT *
         FROM Suppliers
-        WHERE SupplierID=%s
+        WHERE SupplierID = %s
     """, (supplier_id,))
 
     supplier = cursor.fetchone()
@@ -113,7 +145,11 @@ def edit_supplier(supplier_id):
     )
 
 
+# ==========================
+# Delete Supplier
+# ==========================
 @suppliers.route("/suppliers/delete/<int:supplier_id>")
+@admin_required
 def delete_supplier(supplier_id):
 
     connection = get_connection()
@@ -121,12 +157,14 @@ def delete_supplier(supplier_id):
 
     cursor.execute("""
         DELETE FROM Suppliers
-        WHERE SupplierID=%s
+        WHERE SupplierID = %s
     """, (supplier_id,))
 
     connection.commit()
 
     cursor.close()
     connection.close()
+
+    flash("Supplier deleted successfully.", "success")
 
     return redirect(url_for("suppliers.view_suppliers"))

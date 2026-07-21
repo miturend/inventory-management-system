@@ -7,7 +7,7 @@ sales
 {% block content %}
 
 <h1>Sales</h1>
-<a href="{{ url_for('sales.add_sale') }}">
+<a href="{{ url_for('sales.add_sale') }}" class="btn btn-primary">
     New Sale
 </a>
 
@@ -27,7 +27,7 @@ sales
 
 <tr>
     <td>
-    <a href="{{ url_for('sales.sale_items', sale_id=sale.SaleID) }}">
+    <a href="{{ url_for('sales.sale_items', sale_id=sale.SaleID) }}" class="btn btn-primary">
         View Items
     </a>
 </td>

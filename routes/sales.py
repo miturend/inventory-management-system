@@ -1,10 +1,16 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from database import get_connection
 from mysql.connector import Error
+from utils.auth_helpers import login_required, admin_required
 
 sales = Blueprint("sales", __name__)
 
+
+# ==========================
+# View Sales
+# ==========================
 @sales.route("/sales")
+@login_required
 def view_sales():
 
     connection = get_connection()
@@ -18,8 +24,8 @@ def view_sales():
             Sales.Notes
         FROM Sales
         INNER JOIN Customers
-        ON Sales.CustomerID = Customers.CustomerID
-        ORDER BY SaleID DESC
+            ON Sales.CustomerID = Customers.CustomerID
+        ORDER BY Sales.SaleID DESC
     """)
 
     sales_list = cursor.fetchall()
@@ -32,12 +38,12 @@ def view_sales():
         sales=sales_list
     )
 
-    #add new route(New sale feature)
 
-
-# ... keep your existing code ...
-
+# ==========================
+# Add Sale
+# ==========================
 @sales.route("/sales/add", methods=["GET", "POST"])
+@admin_required
 def add_sale():
 
     connection = get_connection()
@@ -61,12 +67,17 @@ def add_sale():
                 CURDATE(),
                 %s
             )
-        """, (customer, notes))
+        """, (
+            customer,
+            notes
+        ))
 
         connection.commit()
 
         cursor.close()
         connection.close()
+
+        flash("Sale created successfully.", "success")
 
         return redirect(url_for("sales.view_sales"))
 
@@ -84,10 +95,60 @@ def add_sale():
     return render_template(
         "add_sale.html",
         customers=customers
-    )    
+    )
 
-    #add route fro salesitems
+
+# ==========================
+# View Sale Items
+# ==========================
+@sales.route("/sales/<int:sale_id>")
+@login_required
+def sale_items(sale_id):
+
+    connection = get_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT
+            ProductID,
+            ProductName
+        FROM Products
+        ORDER BY ProductName
+    """)
+
+    products = cursor.fetchall()
+
+    cursor.execute("""
+        SELECT
+            SaleItems.SaleItemID,
+            Products.ProductName,
+            SaleItems.Quantity,
+            SaleItems.UnitPrice,
+            SaleItems.TotalAmount
+        FROM SaleItems
+        INNER JOIN Products
+            ON SaleItems.ProductID = Products.ProductID
+        WHERE SaleItems.SaleID = %s
+    """, (sale_id,))
+
+    items = cursor.fetchall()
+
+    cursor.close()
+    connection.close()
+
+    return render_template(
+        "sale_items.html",
+        sale_id=sale_id,
+        products=products,
+        items=items
+    )
+
+
+# ==========================
+# Add Sale Item
+# ==========================
 @sales.route("/sales/<int:sale_id>/add_item", methods=["POST"])
+@admin_required
 def add_sale_item(sale_id):
 
     product = request.form["product"]
@@ -118,24 +179,18 @@ def add_sale_item(sale_id):
 
         connection.commit()
 
-    except Error as e:
+        flash("Sale item added successfully.", "success")
+
+    except Error:
 
         connection.rollback()
 
-        cursor.close()
-        connection.close()
-
         flash("Not enough stock available.", "danger")
 
-        return redirect(
-            url_for(
-                "sales.sale_items",
-                sale_id=sale_id
-            )
-    )
+    finally:
 
-    cursor.close()
-    connection.close()
+        cursor.close()
+        connection.close()
 
     return redirect(
         url_for(
@@ -143,44 +198,3 @@ def add_sale_item(sale_id):
             sale_id=sale_id
         )
     )
-
-@sales.route("/sales/<int:sale_id>")
-def sale_items(sale_id):
-
-    connection = get_connection()
-    cursor = connection.cursor(dictionary=True)
-
-    cursor.execute("""
-        SELECT
-            productid,
-            productname
-        FROM Products
-        ORDER BY productname
-    """)
-
-    products = cursor.fetchall()
-
-    cursor.execute("""
-        SELECT
-            SaleItems.SaleItemID,
-            Products.productname,
-            SaleItems.Quantity,
-            SaleItems.UnitPrice,
-            SaleItems.TotalAmount
-        FROM SaleItems
-        INNER JOIN Products
-        ON SaleItems.ProductID = Products.productid
-        WHERE SaleItems.SaleID = %s
-    """, (sale_id,))
-
-    items = cursor.fetchall()
-
-    cursor.close()
-    connection.close()
-
-    return render_template(
-        "sale_items.html",
-        sale_id=sale_id,
-        products=products,
-        items=items
-    )    

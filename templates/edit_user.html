@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit User
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Edit User</h2>
+
+<form method="POST">
+
+    <div class="mb-3">
+
+        <label class="form-label">Username</label>
+
+        <input
+            type="text"
+            class="form-control"
+            name="username"
+            value="{{ user.Username }}"
+            required>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">Role</label>
+
+        <select class="form-select" name="role">
+
+            <option value="Admin"
+                {% if user.Role == "Admin" %}selected{% endif %}>
+                Admin
+            </option>
+
+            <option value="Manager"
+                {% if user.Role == "Manager" %}selected{% endif %}>
+                Manager
+            </option>
+
+            <option value="Cashier"
+                {% if user.Role == "Cashier" %}selected{% endif %}>
+                Cashier
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="mb-3">
+
+    <label class="form-label">New Password</label>
+
+    <div class="input-group">
+
+        <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="Leave blank to keep current password">
+
+        <button
+            class="btn btn-outline-secondary"
+            type="button"
+            onclick="togglePassword('password')">
+
+            👁
+
+        </button>
+
+    </div>
+
+</div>
+
+<div class="mb-3">
+
+    <label class="form-label">Confirm New Password</label>
+
+    <div class="input-group">
+
+        <input
+            type="password"
+            class="form-control"
+            id="confirm_password"
+            name="confirm_password"
+            placeholder="Confirm new password">
+
+        <button
+            class="btn btn-outline-secondary"
+            type="button"
+            onclick="togglePassword('confirm_password')">
+
+            👁
+
+        </button>
+
+    </div>
+
+</div>
+
+    <button type="submit" class="btn btn-primary">
+        Update User
+    </button>
+
+    <a href="{{ url_for('users.view_users') }}"
+       class="btn btn-secondary">
+        Cancel
+    </a>
+
+</form>
+<script>
+
+function togglePassword(id){
+
+    let input = document.getElementById(id);
+
+    if(input.type === "password"){
+
+        input.type = "text";
+
+    }
+
+    else{
+
+        input.type = "password";
+
+    }
+
+}
+
+</script>
+
+{% endblock %}
