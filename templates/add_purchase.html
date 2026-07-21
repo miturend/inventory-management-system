@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>New Purchase</title>
+
+</head>
+
+<body>
+
+<h1>New Purchase</h1>
+
+<form method="POST">
+
+<p>Supplier</p>
+
+<select name="supplier">
+
+{% for supplier in suppliers %}
+
+<option value="{{ supplier.SupplierID }}">
+
+{{ supplier.SupplierName }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+<p>Invoice Number</p>
+
+<input
+type="text"
+name="invoice"
+required>
+
+<p>Notes</p>
+
+<textarea
+name="notes"></textarea>
+
+<br><br>
+
+<button>
+
+Save Purchase
+
+</button>
+
+</form>
+
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Purchases</title>
+
+</head>
+
+<body>
+
+<h1>Purchases</h1>
+
+<p>
+
+<a href="{{ url_for('purchases.add_purchase') }}">
+
+<button>New Purchase</button>
+
+</a>
+
+</p>
+
+<table border="1" cellpadding="10">
+
+<tr>
+    <th>ID</th>
+    <th>Supplier</th>
+    <th>Date</th>
+    <th>Invoice</th>
+    <th>Notes</th>
+    <th>Action</th>
+</tr>
+
+{% for purchase in purchases %}
+
+<tr>
+
+    <td>{{ purchase.PurchaseID }}</td>
+
+    <td>{{ purchase.SupplierName }}</td>
+
+    <td>{{ purchase.PurchaseDate }}</td>
+
+    <td>{{ purchase.InvoiceNumber }}</td>
+
+    <td>{{ purchase.notes }}</td>
+
+    <td>
+        <a href="{{ url_for('purchases.purchase_items', purchase_id=purchase.PurchaseID) }}">
+            View Items
+        </a>
+    </td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+
+</html>
