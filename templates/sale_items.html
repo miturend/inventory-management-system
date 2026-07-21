@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Sale Items</title>
+
+</head>
+
+<body>
+
+<h1>Sale Items</h1>
+
+<form method="POST"
+action="{{ url_for('sales.add_sale_item',
+sale_id=sale_id) }}">
+
+<p>Product</p>
+
+
+<select name="product">
+
+{% for product in products %}
+
+<option value="{{ product.productid }}">
+    {{ product.productname }}
+</option>
+
+{% endfor %}
+
+</select>
+
+<p>Quantity</p>
+
+<input
+type="number"
+name="quantity"
+required>
+
+<p>Unit price</p>
+
+<input
+type="number"
+step="0.01"
+name="unit_price"
+required>
+
+<br><br>
+
+<button>
+
+Add Sale
+
+</button>
+
+</form>
+
+<hr>
+
+<table border="1" cellpadding="10">
+
+<tr>
+    <th>Product</th>
+    <th>Quantity</th>
+    <th>Unit Price</th>
+    <th>Total</th>
+</tr>
+
+{% for item in items %}
+
+<tr>
+
+    <td>{{ item.productname }}</td>
+
+    <td>{{ item.Quantity }}</td>
+
+    <td>{{ item.UnitPrice }}</td>
+
+    <td>{{ item.TotalAmount }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+
+</html>

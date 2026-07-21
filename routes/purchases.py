@@ -192,6 +192,7 @@ def add_purchase_item(purchase_id):
     quantity,
     unit_cost
 ))
+    
 
     connection.commit()
 

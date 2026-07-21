@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sales</title>
+</head>
+
+<body>
+
+<h1>Sales</h1>
+<a href="{{ url_for('sales.add_sale') }}">
+    New Sale
+</a>
+
+<br><br>
+
+<table border="1" cellpadding="10">
+
+<tr>
+    <th>ID</th>
+    <th>Customer</th>
+    <th>Date</th>
+    <th>Notes</th>
+    <th>Actions</th>
+</tr>
+
+{% for sale in sales %}
+
+<tr>
+    <td>
+    <a href="{{ url_for('sales.sale_items', sale_id=sale.SaleID) }}">
+        View Items
+    </a>
+</td>
+
+<td>{{ sale.SaleID }}</td>
+
+<td>{{ sale.CustomerName }}</td>
+
+<td>{{ sale.SaleDate }}</td>
+
+<td>{{ sale.Notes }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>

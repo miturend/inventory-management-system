@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Sale</title>
+</head>
+
+<body>
+
+<h1>New Sale</h1>
+
+<form method="POST">
+
+<p>Customer</p>
+
+<select name="customer">
+
+{% for customer in customers %}
+
+<option value="{{ customer.CustomerID }}">
+    {{ customer.CustomerName }}
+</option>
+
+{% endfor %}
+
+</select>
+
+<p>Notes</p>
+
+<textarea
+name="notes"
+rows="4"
+cols="40"></textarea>
+
+<br><br>
+
+<button>
+
+Create Sale
+
+</button>
+
+</form>
+
+</body>
+
+</html>
