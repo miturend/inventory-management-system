@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Okeysam Investments</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="sidebar">
+
+    <h2>OKEYSAM</h2>
+
+    <a href="#">Dashboard</a>
+    <a href="#">Products</a>
+    <a href="#">Customers</a>
+    <a href="#">Suppliers</a>
+    <a href="#">Purchases</a>
+    <a href="#">Sales</a>
+    <a href="#">Reports</a>
+    <a href="#">Expenses</a>
+
+</div>
+
+<div class="main">
+
+    <h1>Dashboard</h1>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Total Products</h3>
+            <h2>{{ total_products }}</h2>
+        </div>
+
+        <div class="card">
+            <h3>Total Customers</h3>
+            <h2>{{ total_customers }}</h2>
+        </div>
+
+        <div class="card">
+            <h3>Total Suppliers</h3>
+            <h2>{{ total_suppliers }}</h2>
+        </div>
+
+        <div class="card">
+            <h3>Low Stock</h3>
+            <h2>Coming Soon</h2>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

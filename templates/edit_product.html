@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Edit Product</title>
+
+</head>
+
+<body>
+
+<h1>Edit Product</h1>
+
+<form method="POST">
+
+    <p>Product Name</p>
+
+    <input
+        type="text"
+        name="product_name"
+        value="{{ product.ProductName }}"
+        required>
+
+    <p>Selling Price</p>
+
+    <input
+        type="number"
+        name="selling_price"
+        value="{{ product.SellingPrice }}"
+        required>
+
+    <p>Stock</p>
+
+    <input
+        type="number"
+        name="stock"
+        value="{{ product.Stock }}"
+        required>
+
+    <br><br>
+
+    <button type="submit">
+        Update Product
+    </button>
+
+</form>
+
+<br>
+
+<a href="{{ url_for('products.view_products') }}">
+    Back to Products
+</a>
+
+</body>
+
+</html>

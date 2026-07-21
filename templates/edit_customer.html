@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Edit Customer</title>
+
+</head>
+
+<body>
+
+<h1>Edit Customer</h1>
+
+<form method="POST">
+
+    <p>Customer Name</p>
+
+    <input
+        type="text"
+        name="customer_name"
+        value="{{ customer.CustomerName }}"
+        required>
+
+    <p>Phone</p>
+
+    <input
+        type="number"
+        name="phone"
+        value="{{ customer.Phone }}"
+        required>
+
+    <p>Address</p>
+
+    <input
+        type="number"
+        name="address"
+        value="{{ customer.Address }}"
+        required>
+
+    <br><br>
+
+    <button type="submit">
+        Update Customer
+    </button>
+
+</form>
+
+<br>
+
+<a href="{{ url_for('customers.view_customers') }}">
+    Back to Customers
+</a>
+
+</body>
+
+</html>
