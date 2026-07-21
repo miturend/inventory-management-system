@@ -1,16 +1,29 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 
-<html>
+{% block title %}
+sale_items
+{% endblock %}
 
-<head>
-
-<title>Sale Items</title>
-
-</head>
-
-<body>
+{% block content %}
 
 <h1>Sale Items</h1>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+
+            <div style="
+                color:red;
+                border:1px solid red;
+                padding:10px;
+                margin-bottom:15px;">
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
 <form method="POST"
 action="{{ url_for('sales.add_sale_item',
@@ -85,6 +98,4 @@ Add Sale
 
 </table>
 
-</body>
-
-</html>
+{% endblock %}

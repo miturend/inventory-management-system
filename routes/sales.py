@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from database import get_connection
+from mysql.connector import Error
 
 sales = Blueprint("sales", __name__)
 
@@ -33,8 +34,6 @@ def view_sales():
 
     #add new route(New sale feature)
 
-from flask import Blueprint, render_template, request, redirect, url_for
-from database import get_connection
 
 # ... keep your existing code ...
 
@@ -88,6 +87,63 @@ def add_sale():
     )    
 
     #add route fro salesitems
+@sales.route("/sales/<int:sale_id>/add_item", methods=["POST"])
+def add_sale_item(sale_id):
+
+    product = request.form["product"]
+    quantity = float(request.form["quantity"])
+    unit_price = float(request.form["unit_price"])
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    try:
+
+        cursor.execute("""
+            INSERT INTO SaleItems
+            (
+                SaleID,
+                ProductID,
+                Quantity,
+                UnitPrice
+            )
+            VALUES
+            (%s, %s, %s, %s)
+        """, (
+            sale_id,
+            product,
+            quantity,
+            unit_price
+        ))
+
+        connection.commit()
+
+    except Error as e:
+
+        connection.rollback()
+
+        cursor.close()
+        connection.close()
+
+        flash("Not enough stock available.", "danger")
+
+        return redirect(
+            url_for(
+                "sales.sale_items",
+                sale_id=sale_id
+            )
+    )
+
+    cursor.close()
+    connection.close()
+
+    return redirect(
+        url_for(
+            "sales.sale_items",
+            sale_id=sale_id
+        )
+    )
+
 @sales.route("/sales/<int:sale_id>")
 def sale_items(sale_id):
 
@@ -127,43 +183,4 @@ def sale_items(sale_id):
         sale_id=sale_id,
         products=products,
         items=items
-    )    
-    #add another route for adding sales
-@sales.route("/sales/<int:sale_id>/add_item", methods=["POST"])
-def add_sale_item(sale_id):
-
-    product = request.form["product"]
-    quantity = float(request.form["quantity"])
-    unit_price = float(request.form["unit_price"])
-
-    connection = get_connection()
-    cursor = connection.cursor()
-
-    cursor.execute("""
-        INSERT INTO SaleItems
-        (
-            SaleID,
-            ProductID,
-            Quantity,
-            UnitPrice
-        )
-        VALUES
-        (%s, %s, %s, %s)
-    """, (
-        sale_id,
-        product,
-        quantity,
-        unit_price
-    ))
-
-    connection.commit()
-
-    cursor.close()
-    connection.close()
-
-    return redirect(
-        url_for(
-            "sales.sale_items",
-            sale_id=sale_id
-        )
     )    

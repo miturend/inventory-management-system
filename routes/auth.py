@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, session
 from database import get_connection
 
 auth = Blueprint("auth", __name__)
@@ -63,3 +63,7 @@ def dashboard():
         total_customers=total_customers,
         total_suppliers=total_suppliers,
     )
+@auth.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("auth.login"))    

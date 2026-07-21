@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <title>Sales</title>
-</head>
+{% block title %}
+sales
+{% endblock %}
 
-<body>
+{% block content %}
 
 <h1>Sales</h1>
 <a href="{{ url_for('sales.add_sale') }}">
@@ -47,5 +46,4 @@
 
 </table>
 
-</body>
-</html>
+{% endblock %}

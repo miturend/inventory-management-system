@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
+{% block title %}
+Supliers
+{% endblock %}
 
-    <title>Suppliers</title>
-
-</head>
-
-<body>
+{% block content %}
 
 <h1>Suppliers</h1>
 <form method="GET">
@@ -72,7 +69,4 @@
 {% endfor %}
 
 </table>
-
-</body>
-
-</html>
+{% endblock %}
