@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from database import get_connection
-from utils.auth_helpers import login_required, admin_required
+from utils.auth_helpers import login_required
+from utils.permissions import roles_required
 from utils.activity import log_activity
 
 products = Blueprint("products", __name__)
@@ -59,7 +60,8 @@ def view_products():
 # Add Product
 # ==========================
 @products.route("/products/add", methods=["GET", "POST"])
-@admin_required
+@login_required
+@roles_required("Admin","Manager")
 def add_product():
 
     if request.method == "POST":
@@ -107,7 +109,8 @@ def add_product():
 # Edit Product
 # ==========================
 @products.route("/products/edit/<int:product_id>", methods=["GET", "POST"])
-@admin_required
+@login_required
+@roles_required("Admin","Manager")
 def edit_product(product_id):
 
     connection = get_connection()
@@ -168,7 +171,8 @@ def edit_product(product_id):
 # Delete Product
 # ==========================
 @products.route("/products/delete/<int:product_id>")
-@admin_required
+@login_required
+@roles_required("Admin")
 def delete_product(product_id):
 
     connection = get_connection()

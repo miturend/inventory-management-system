@@ -40,6 +40,17 @@ def view_dashboard():
     """)
     total_stock = cursor.fetchone()["total_stock"]
 
+    cursor.execute("""
+        SELECT
+            ProductName,
+            Stock
+        FROM Products
+        WHERE Stock <= 5
+        ORDER BY Stock ASC
+    """)
+
+    low_stock = cursor.fetchall()
+
     # ==========================
     # Today's Sales
     # ==========================
@@ -102,6 +113,49 @@ def view_dashboard():
 
     low_stock = cursor.fetchone()["low_stock"]
 
+    # Today's Sales
+    cursor.execute("""
+        SELECT IFNULL(SUM(SaleItems.TotalAmount),0) AS today_sales
+        FROM Sales
+        INNER JOIN SaleItems
+            ON Sales.SaleID = SaleItems.SaleID
+        WHERE SaleDate = CURDATE()
+    """)
+    today_sales = cursor.fetchone()["today_sales"]
+
+    # Monthly Sales
+    cursor.execute("""
+        SELECT IFNULL(SUM(SaleItems.TotalAmount),0) AS monthly_sales
+        FROM Sales
+        INNER JOIN SaleItems
+            ON Sales.SaleID = SaleItems.SaleID
+        WHERE MONTH(SaleDate)=MONTH(CURDATE())
+          AND YEAR(SaleDate)=YEAR(CURDATE())
+    """)
+    monthly_sales = cursor.fetchone()["monthly_sales"]
+
+    # Monthly Expenses
+    cursor.execute("""
+        SELECT IFNULL(SUM(Amount),0) AS monthly_expenses
+        FROM Expenses
+        WHERE MONTH(ExpenseDate)=MONTH(CURDATE())
+          AND YEAR(ExpenseDate)=YEAR(CURDATE())
+    """)
+    monthly_expenses = cursor.fetchone()["monthly_expenses"]
+
+    # Top 5 Best Selling Products
+    cursor.execute("""
+        SELECT
+            Products.ProductName,
+            SUM(SaleItems.Quantity) AS TotalSold
+        FROM SaleItems
+        INNER JOIN Products
+            ON SaleItems.ProductID = Products.ProductID
+        GROUP BY Products.ProductID
+        ORDER BY TotalSold DESC
+        LIMIT 5
+    """)
+    top_products = cursor.fetchall()
     cursor.close()
     connection.close()
 
@@ -113,9 +167,12 @@ def view_dashboard():
         total_suppliers=total_suppliers,
         total_stock=total_stock,
 
-        today_sales=today_sales,
         today_purchases=today_purchases,
         today_expenses=today_expenses,
         today_profit=today_profit,
-        low_stock=low_stock
-    )
+        low_stock=low_stock,
+        today_sales=today_sales,
+        monthly_sales=monthly_sales,
+        monthly_expenses=monthly_expenses,
+        top_products=top_products
+)

@@ -22,13 +22,15 @@ Products
 
 <br>
 
+{% if session.get("role") in ["Admin","Manager"] %}
 <p>
     <a href="{{ url_for('products.add_product') }}">
         <button class="btn btn-primary">
-    Add Product
-</button>
+            Add Product
+        </button>
     </a>
 </p>
+{% endif %}
 
 <table class="table table-striped table-hover">
 
@@ -52,27 +54,39 @@ Products
     <td>{{ product.Stock }}</td>
     <td>
 
-    <a href="{{ url_for('products.edit_product', product_id=product.ProductID) }}">
-        <button class="btn btn-warning btn-sm">
+    {% if session.get("role") in ["Admin","Manager"] %}
+<a href="{{ url_for('products.edit_product',
+    product_id=product.ProductID) }}"
+    class="btn btn-warning btn-sm">
     Edit
-</button>
-    </a>
+</a>
+{% endif %}
 
-    <a href="{{ url_for('products.delete_product', product_id=product.ProductID) }}"
-       onclick="return confirm('Are you sure you want to delete this product?');">
+    {% if session.get("role") in ["Admin","Manager"] %}
+<a href="{{ url_for('adjustments.adjust_stock',
+    product_id=product.ProductID) }}"
+    class="btn btn-info btn-sm">
+    Adjust
+</a>
+{% endif %}
 
-        <button class="btn btn-danger btn-sm">
+    {% if session.get("role") == "Admin" %}
+<a href="{{ url_for('products.delete_product',
+    product_id=product.ProductID) }}"
+    class="btn btn-danger btn-sm"
+    onclick="return confirm('Are you sure you want to delete this product?');">
     Delete
-</button>
-
-    </a>
+</a>
+{% endif %}
 
 </td>
 
 </tr>
 
+
 {% endfor %}
 
 </table>
+
 
 {% endblock %}

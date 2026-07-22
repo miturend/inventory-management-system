@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}
+Database Backup
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Database Backup</h2>
+
+<div class="card mb-4">
+
+    <div class="card-body">
+
+        <h5>Create Backup</h5>
+
+        <p>
+            Create a full backup of your database.
+        </p>
+
+        <a href="{{ url_for('backup.create_backup_route') }}"
+           class="btn btn-success">
+
+            💾 Create Backup
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="card-header">
+
+        Existing Backups
+
+    </div>
+
+    <div class="card-body">
+
+        {% if backups %}
+
+        <table class="table table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th>Backup File</th>
+
+                    <th width="220">Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for file in backups %}
+
+                <tr>
+
+                    <td>{{ file }}</td>
+
+                    <td>
+
+    <a class="btn btn-primary btn-sm"
+       href="{{ url_for('backup.download_backup', filename=file) }}">
+        Download
+    </a>
+
+    <a class="btn btn-warning btn-sm"
+   href="{{ url_for('backup.restore_backup', filename=file) }}">
+
+    Restore
+
+</a>
+
+    <a class="btn btn-danger btn-sm"
+       href="{{ url_for('backup.delete_backup', filename=file) }}"
+       onclick="return confirm('Delete this backup?')">
+        Delete
+    </a>
+
+</td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="alert alert-info">
+
+            No backups found.
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

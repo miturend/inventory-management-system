@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from database import get_connection
 from mysql.connector import Error
+from utils.stock import add_stock_movement
 from utils.auth_helpers import login_required, admin_required
 
 sales = Blueprint("sales", __name__)
@@ -178,6 +179,13 @@ def add_sale_item(sale_id):
         ))
 
         connection.commit()
+
+        add_stock_movement(
+        product,
+        "SALE",
+        -quantity,
+        "Product sold"
+)
 
         flash("Sale item added successfully.", "success")
 

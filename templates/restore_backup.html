@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}
+Restore Database
+{% endblock %}
+
+{% block content %}
+
+<div class="card border-danger">
+
+    <div class="card-header bg-danger text-white">
+
+        <h3>⚠ Restore Database</h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <p class="text-danger fw-bold">
+
+            You are about to restore the following backup:
+
+        </p>
+
+        <div class="alert alert-warning">
+
+            <strong>{{ filename }}</strong>
+
+        </div>
+
+        <p>
+
+            This will replace your current database with the contents of this backup.
+
+        </p>
+
+        <p class="fw-bold">
+
+            Type <span class="text-danger">RESTORE</span> below to continue.
+
+        </p>
+
+        <form method="POST">
+
+            <input
+                type="text"
+                name="confirm"
+                class="form-control mb-3"
+                placeholder="Type RESTORE">
+
+            <button
+                class="btn btn-danger">
+
+                Restore Database
+
+            </button>
+
+            <a
+                href="{{ url_for('backup.view_backup') }}"
+                class="btn btn-secondary">
+
+                Cancel
+
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

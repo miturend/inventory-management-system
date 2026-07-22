@@ -183,15 +183,49 @@ def delete_user(user_id):
     connection = get_connection()
     cursor = connection.cursor()
 
+    # Prevent deleting the last Admin account
+    cursor.execute("""
+        SELECT Role
+        FROM Users
+        WHERE UserID = %s
+    """, (user_id,))
+
+    user = cursor.fetchone()
+
+    if user and user[0] == "Admin":
+
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM Users
+            WHERE Role = 'Admin'
+        """)
+
+        admin_count = cursor.fetchone()[0]
+
+        if admin_count <= 1:
+
+            cursor.close()
+            connection.close()
+
+            flash(
+                "Cannot delete the last Admin account.",
+                "danger"
+            )
+
+            return redirect(url_for("users.view_users"))
+
+
+    # Delete user
     cursor.execute("""
         DELETE FROM Users
         WHERE UserID = %s
     """, (user_id,))
 
     connection.commit()
+
     flash("User deleted successfully.", "success")
 
     cursor.close()
     connection.close()
 
-    return redirect(url_for("users.view_users"))    
+    return redirect(url_for("users.view_users"))

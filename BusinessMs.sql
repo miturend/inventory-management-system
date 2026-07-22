@@ -1,2 +1,5 @@
-ALTER TABLE ActivityLogs
-ADD Description VARCHAR(255);
+SELECT
+    ProductID AS productid,
+    ProductName AS productname
+FROM Products
+ORDER BY ProductName

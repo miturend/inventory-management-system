@@ -13,32 +13,53 @@ sales
 
 <br><br>
 
-<table border="1" cellpadding="10">
+<table class="table table-striped table-hover">
 
 <tr>
+
     <th>ID</th>
+
     <th>Customer</th>
+
     <th>Date</th>
+
     <th>Notes</th>
+
     <th>Actions</th>
+
 </tr>
 
 {% for sale in sales %}
 
 <tr>
+
+    <td>{{ sale.SaleID }}</td>
+
+    <td>{{ sale.CustomerName }}</td>
+
+    <td>{{ sale.SaleDate }}</td>
+
+    <td>{{ sale.Notes }}</td>
+
     <td>
-    <a href="{{ url_for('sales.sale_items', sale_id=sale.SaleID) }}" class="btn btn-primary">
-        View Items
-    </a>
-</td>
 
-<td>{{ sale.SaleID }}</td>
+        <a href="{{ url_for('sales.sale_items',
+        sale_id=sale.SaleID) }}"
+        class="btn btn-primary btn-sm">
 
-<td>{{ sale.CustomerName }}</td>
+            View Items
 
-<td>{{ sale.SaleDate }}</td>
+        </a>
 
-<td>{{ sale.Notes }}</td>
+        <a href="{{ url_for('receipts.sale_receipt',
+        sale_id=sale.SaleID) }}"
+        class="btn btn-success btn-sm">
+
+            Receipt
+
+        </a>
+
+    </td>
 
 </tr>
 

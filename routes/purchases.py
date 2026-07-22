@@ -178,8 +178,15 @@ def add_purchase_item(purchase_id):
             quantity,
             unit_cost
         ))
+        from utils.stock import add_stock_movement
 
         connection.commit()
+        add_stock_movement(
+    product,
+    "PURCHASE",
+    quantity,
+    "Purchase stock added"
+)
 
         flash("Purchase item added successfully.", "success")
 
