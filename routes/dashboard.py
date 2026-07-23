@@ -56,12 +56,12 @@ def view_dashboard():
     # ==========================
 
     cursor.execute("""
-        SELECT IFNULL(SUM(TotalAmount),0) AS today_sales
-        FROM saleitems
-        INNER JOIN sales
-        ON SaleItems.SaleID = Sales.SaleID
-        WHERE Sales.SaleDate = CURDATE()
-    """)
+    SELECT IFNULL(SUM(saleitems.TotalAmount),0) AS today_sales
+    FROM saleitems
+    INNER JOIN sales
+        ON saleitems.SaleID = sales.SaleID
+    WHERE sales.SaleDate = CURDATE()
+""")
 
     today_sales = cursor.fetchone()["today_sales"]
 
@@ -70,12 +70,12 @@ def view_dashboard():
     # ==========================
 
     cursor.execute("""
-        SELECT IFNULL(SUM(TotalAmount),0) AS today_purchases
-        FROM purchaseitems
-        INNER JOIN purchases
-        ON PurchaseItems.PurchaseID = Purchases.PurchaseID
-        WHERE Purchases.PurchaseDate = CURDATE()
-    """)
+    SELECT IFNULL(SUM(purchaseitems.TotalAmount),0) AS today_purchases
+    FROM purchaseitems
+    INNER JOIN purchases
+        ON purchaseitems.PurchaseID = purchases.PurchaseID
+    WHERE purchases.PurchaseDate = CURDATE()
+""")
 
     today_purchases = cursor.fetchone()["today_purchases"]
 
@@ -84,7 +84,7 @@ def view_dashboard():
     # ==========================
 
     cursor.execute("""
-        SELECT IFNULL(SUM(Amount),0) AS today_expenses
+        SELECT IFNULL(SUM(expenses.Amount),0) AS today_expenses
         FROM Expenses
         WHERE ExpenseDate = CURDATE()
     """)
@@ -115,12 +115,12 @@ def view_dashboard():
 
     # Today's Sales
     cursor.execute("""
-        SELECT IFNULL(SUM(SaleItems.TotalAmount),0) AS today_sales
-        FROM sales
-        INNER JOIN saleitems
-            ON Sales.SaleID = SaleItems.SaleID
-        WHERE SaleDate = CURDATE()
-    """)
+    SELECT IFNULL(SUM(saleitems.TotalAmount),0) AS today_sales
+    FROM sales
+    INNER JOIN saleitems
+        ON sales.SaleID = saleitems.SaleID
+    WHERE sales.SaleDate = CURDATE()
+""")
     today_sales = cursor.fetchone()["today_sales"]
 
     # Monthly Sales
