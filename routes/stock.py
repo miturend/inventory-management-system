@@ -28,6 +28,7 @@ def stock_history():
             ON StockMovements.UserID = users.UserID
         ORDER BY StockMovements.CreatedDate DESC
     """)
+    
 
     movements = cursor.fetchall()
 
