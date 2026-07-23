@@ -17,7 +17,7 @@ def view_expenses():
 
     cursor.execute("""
         SELECT *
-        FROM Expenses
+        FROM expenses
         ORDER BY ExpenseID DESC
     """)
 
