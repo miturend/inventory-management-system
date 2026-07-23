@@ -20,7 +20,7 @@ def sale_receipt(sale_id):
     cursor.execute("""
         SELECT
             Sales.SaleID,
-            Sales.SaleDate,
+            sales.SaleDate,
             Sales.Notes,
             Customers.CustomerName
         FROM sales
@@ -35,13 +35,13 @@ def sale_receipt(sale_id):
     cursor.execute("""
         SELECT
             Products.ProductName,
-            SaleItems.Quantity,
-            SaleItems.UnitPrice,
-            SaleItems.TotalAmount
+            saleitems.Quantity,
+            saleitems.UnitPrice,
+            saleitems.TotalAmount
         FROM saleitems
         INNER JOIN products
-            ON SaleItems.ProductID=Products.ProductID
-        WHERE SaleItems.SaleID=%s
+            ON saleitems.ProductID=Products.ProductID
+        WHERE saleitems.SaleID=%s
     """, (sale_id,))
 
     items = cursor.fetchall()
@@ -68,7 +68,7 @@ def receipt_pdf(sale_id):
     cursor.execute("""
         SELECT
             Sales.SaleID,
-            Sales.SaleDate,
+            sales.SaleDate,
             Sales.Notes,
             Customers.CustomerName
         FROM sales
@@ -82,13 +82,13 @@ def receipt_pdf(sale_id):
     cursor.execute("""
         SELECT
             Products.ProductName,
-            SaleItems.Quantity,
-            SaleItems.UnitPrice,
-            SaleItems.TotalAmount
+            saleitems.Quantity,
+            saleitems.UnitPrice,
+            saleitems.TotalAmount
         FROM saleitems
         INNER JOIN products
-            ON SaleItems.ProductID=Products.ProductID
-        WHERE SaleItems.SaleID=%s
+            ON saleitems.ProductID=Products.ProductID
+        WHERE saleitems.SaleID=%s
     """, (sale_id,))
 
     items = cursor.fetchall()

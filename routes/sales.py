@@ -21,7 +21,7 @@ def view_sales():
         SELECT
             Sales.SaleID,
             Customers.CustomerName,
-            Sales.SaleDate,
+            sales.SaleDate,
             Sales.Notes
         FROM sales
         INNER JOIN customers
@@ -121,15 +121,15 @@ def sale_items(sale_id):
 
     cursor.execute("""
         SELECT
-            SaleItems.SaleItemID,
+            saleitems.SaleItemID,
             Products.ProductName,
-            SaleItems.Quantity,
-            SaleItems.UnitPrice,
-            SaleItems.TotalAmount
+            saleitems.Quantity,
+            saleitems.UnitPrice,
+            saleitems.TotalAmount
         FROM saleitems
         INNER JOIN products
-            ON SaleItems.ProductID = Products.ProductID
-        WHERE SaleItems.SaleID = %s
+            ON saleitems.ProductID = Products.ProductID
+        WHERE saleitems.SaleID = %s
     """, (sale_id,))
 
     items = cursor.fetchall()

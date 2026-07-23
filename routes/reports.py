@@ -29,28 +29,28 @@ def view_reports():
 
             cursor.execute("""
                 SELECT
-                    Sales.SaleDate,
+                    sales.SaleDate,
                     Customers.CustomerName,
-                    SUM(SaleItems.TotalAmount) AS Total
+                    SUM(saleitems.TotalAmount) AS Total
                 FROM sales
                 INNER JOIN customers
                     ON Sales.CustomerID = Customers.CustomerID
                 INNER JOIN saleitems
-                    ON Sales.SaleID = SaleItems.SaleID
-                WHERE Sales.SaleDate BETWEEN %s AND %s
+                    ON Sales.SaleID = saleitems.SaleID
+                WHERE sales.SaleDate BETWEEN %s AND %s
                 GROUP BY Sales.SaleID
-                ORDER BY Sales.SaleDate DESC
+                ORDER BY sales.SaleDate DESC
             """, (start_date, end_date))
 
             sales = cursor.fetchall()
 
             cursor.execute("""
                 SELECT
-                    IFNULL(SUM(SaleItems.TotalAmount),0) AS total_sales
+                    IFNULL(SUM(saleitems.TotalAmount),0) AS total_sales
                 FROM sales
                 INNER JOIN saleitems
-                    ON Sales.SaleID = SaleItems.SaleID
-                WHERE Sales.SaleDate BETWEEN %s AND %s
+                    ON Sales.SaleID = saleitems.SaleID
+                WHERE sales.SaleDate BETWEEN %s AND %s
             """, (start_date, end_date))
 
             total_sales = cursor.fetchone()["total_sales"]
@@ -136,11 +136,11 @@ def view_reports():
 
             # Total Sales
             cursor.execute("""
-                SELECT IFNULL(SUM(SaleItems.TotalAmount),0) AS sales
+                SELECT IFNULL(SUM(saleitems.TotalAmount),0) AS sales
                 FROM sales
                 INNER JOIN saleitems
-                    ON Sales.SaleID = SaleItems.SaleID
-                WHERE Sales.SaleDate BETWEEN %s AND %s
+                    ON Sales.SaleID = saleitems.SaleID
+                WHERE sales.SaleDate BETWEEN %s AND %s
             """, (start_date, end_date))
 
             total_sales_amount = cursor.fetchone()["sales"]
