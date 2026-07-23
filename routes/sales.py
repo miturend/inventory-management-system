@@ -18,16 +18,16 @@ def view_sales():
     cursor = connection.cursor(dictionary=True)
 
     cursor.execute("""
-    SELECT
-        sales.SaleID,
-        customers.CustomerName,
-        sales.SaleDate,
-        sales.Notes
-    FROM sales
-    INNER JOIN customers
-        ON sales.CustomerID = customers.CustomerID
-    ORDER BY sales.SaleID DESC
-""")
+        SELECT
+            Sales.SaleID,
+            customers.CustomerName,
+            sales.SaleDate,
+            Sales.Notes
+        FROM sales
+        INNER JOIN customers
+            ON Sales.CustomerID = customers.CustomerID
+        ORDER BY Sales.SaleID DESC
+    """)
 
     sales_list = cursor.fetchall()
 

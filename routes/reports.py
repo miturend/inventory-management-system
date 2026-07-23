@@ -34,11 +34,11 @@ def view_reports():
                     SUM(saleitems.TotalAmount) AS Total
                 FROM sales
                 INNER JOIN customers
-                    ON Sales.CustomerID = customers.CustomerID
+                    ON sales.CustomerID = customers.CustomerID
                 INNER JOIN saleitems
-                    ON Sales.SaleID = saleitems.SaleID
+                    ON sales.SaleID = saleitems.SaleID
                 WHERE sales.SaleDate BETWEEN %s AND %s
-                GROUP BY Sales.SaleID
+                GROUP BY sales.SaleID
                 ORDER BY sales.SaleDate DESC
             """, (start_date, end_date))
 
@@ -49,7 +49,7 @@ def view_reports():
                     IFNULL(SUM(saleitems.TotalAmount),0) AS total_sales
                 FROM sales
                 INNER JOIN saleitems
-                    ON Sales.SaleID = saleitems.SaleID
+                    ON sales.SaleID = saleitems.SaleID
                 WHERE sales.SaleDate BETWEEN %s AND %s
             """, (start_date, end_date))
 
@@ -139,7 +139,7 @@ def view_reports():
                 SELECT IFNULL(SUM(saleitems.TotalAmount),0) AS sales
                 FROM sales
                 INNER JOIN saleitems
-                    ON Sales.SaleID = saleitems.SaleID
+                    ON sales.SaleID = saleitems.SaleID
                 WHERE sales.SaleDate BETWEEN %s AND %s
             """, (start_date, end_date))
 

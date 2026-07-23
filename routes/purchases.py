@@ -122,15 +122,15 @@ def purchase_items(purchase_id):
 
     cursor.execute("""
         SELECT
-            PurchaseItems.PurchaseItemID,
+            purchaseitems.PurchaseItemID,
             products.ProductName,
-            PurchaseItems.Quantity,
-            PurchaseItems.UnitCost,
-            PurchaseItems.TotalAmount
+            purchaseitems.Quantity,
+            purchaseitems.UnitCost,
+            purchaseitems.TotalAmount
         FROM purchaseitems
         INNER JOIN products
-            ON PurchaseItems.ProductID = products.ProductID
-        WHERE PurchaseItems.PurchaseID = %s
+            ON purchaseitems.ProductID = products.ProductID
+        WHERE purchaseitems.PurchaseID = %s
     """, (purchase_id,))
 
     items = cursor.fetchall()

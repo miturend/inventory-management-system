@@ -19,14 +19,14 @@ def sale_receipt(sale_id):
     # Receipt Header
     cursor.execute("""
         SELECT
-            Sales.SaleID,
+            sales.SaleID,
             sales.SaleDate,
-            Sales.Notes,
+            sales.Notes,
             customers.CustomerName
         FROM sales
         INNER JOIN customers
-            ON Sales.CustomerID = customers.CustomerID
-        WHERE Sales.SaleID=%s
+            ON sales.CustomerID = customers.CustomerID
+        WHERE sales.SaleID=%s
     """, (sale_id,))
 
     sale = cursor.fetchone()
@@ -67,14 +67,14 @@ def receipt_pdf(sale_id):
 
     cursor.execute("""
         SELECT
-            Sales.SaleID,
+            sales.SaleID,
             sales.SaleDate,
-            Sales.Notes,
+            sales.Notes,
             customers.CustomerName
         FROM sales
         INNER JOIN customers
-            ON Sales.CustomerID = customers.CustomerID
-        WHERE Sales.SaleID=%s
+            ON sales.CustomerID = customers.CustomerID
+        WHERE sales.SaleID=%s
     """, (sale_id,))
 
     sale = cursor.fetchone()

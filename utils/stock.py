@@ -16,7 +16,7 @@ def add_stock_movement(
 
 
     cursor.execute("""
-        INSERT INTO StockMovements
+        INSERT INTO stockmovements
         (
             ProductID,
             UserID,

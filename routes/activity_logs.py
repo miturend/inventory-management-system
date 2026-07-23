@@ -14,14 +14,14 @@ def view_activity_logs():
 
     cursor.execute("""
         SELECT
-            ActivityLogs.LogID,
+            activitylogs.LogID,
             users.Username,
-            ActivityLogs.Action,
-            ActivityLogs.CreatedDate
+            activitylogs.Action,
+            activitylogs.CreatedDate
         FROM activitylogs
         LEFT JOIN users
-            ON ActivityLogs.UserID = users.UserID
-        ORDER BY ActivityLogs.CreatedDate DESC
+            ON activitylogs.UserID = users.UserID
+        ORDER BY activitylogs.CreatedDate DESC
     """)
 
     logs = cursor.fetchall()

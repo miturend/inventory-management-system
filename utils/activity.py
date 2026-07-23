@@ -10,7 +10,7 @@ def log_activity(action, description):
     user_id = session.get("user_id")
 
     cursor.execute("""
-        INSERT INTO ActivityLogs
+        INSERT INTO activitylogs
         (
             UserID,
             Action,
