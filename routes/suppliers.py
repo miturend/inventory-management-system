@@ -21,7 +21,7 @@ def view_suppliers():
 
         cursor.execute("""
             SELECT *
-            FROM Suppliers
+            FROM suppliers
             WHERE SupplierName LIKE %s
             ORDER BY SupplierID DESC
         """, ("%" + search + "%",))
@@ -30,7 +30,7 @@ def view_suppliers():
 
         cursor.execute("""
             SELECT *
-            FROM Suppliers
+            FROM suppliers
             ORDER BY SupplierID DESC
         """)
 
@@ -63,7 +63,7 @@ def add_supplier():
         cursor = connection.cursor()
 
         cursor.execute("""
-            INSERT INTO Suppliers
+            INSERT INTO suppliers
             (
                 SupplierName,
                 Phone,
@@ -106,7 +106,7 @@ def edit_supplier(supplier_id):
         address = request.form["address"]
 
         cursor.execute("""
-            UPDATE Suppliers
+            UPDATE suppliers
             SET
                 SupplierName = %s,
                 Phone = %s,
@@ -130,7 +130,7 @@ def edit_supplier(supplier_id):
 
     cursor.execute("""
         SELECT *
-        FROM Suppliers
+        FROM suppliers
         WHERE SupplierID = %s
     """, (supplier_id,))
 
@@ -156,7 +156,7 @@ def delete_supplier(supplier_id):
     cursor = connection.cursor()
 
     cursor.execute("""
-        DELETE FROM Suppliers
+        DELETE FROM suppliers
         WHERE SupplierID = %s
     """, (supplier_id,))
 

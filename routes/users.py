@@ -20,7 +20,7 @@ def view_users():
             Username,
             Role,
             CreatedDate
-        FROM Users
+        FROM users
         ORDER BY Username
     """)
 
@@ -60,7 +60,7 @@ def add_user():
 
         cursor.execute("""
             SELECT UserID
-            FROM Users
+            FROM users
             WHERE Username = %s
         """, (username,))
 
@@ -73,7 +73,7 @@ def add_user():
             return render_template("add_user.html")
 
         cursor.execute("""
-            INSERT INTO Users
+            INSERT INTO users
             (
                 Username,
                 PasswordHash,
@@ -134,7 +134,7 @@ def edit_user(user_id):
             password_hash = generate_password_hash(password)
 
             cursor.execute("""
-                UPDATE Users
+                UPDATE users
                 SET
                     Username = %s,
                     PasswordHash = %s,
@@ -143,7 +143,7 @@ def edit_user(user_id):
             """, (username, password_hash, role, user_id))
         else:
             cursor.execute("""
-                UPDATE Users
+                UPDATE users
                 SET
                     Username = %s,
                     Role = %s
@@ -160,7 +160,7 @@ def edit_user(user_id):
 
     cursor.execute("""
         SELECT *
-        FROM Users
+        FROM users
         WHERE UserID = %s
     """, (user_id,))
 
@@ -186,7 +186,7 @@ def delete_user(user_id):
     # Prevent deleting the last Admin account
     cursor.execute("""
         SELECT Role
-        FROM Users
+       FROM users
         WHERE UserID = %s
     """, (user_id,))
 
@@ -196,7 +196,7 @@ def delete_user(user_id):
 
         cursor.execute("""
             SELECT COUNT(*)
-            FROM Users
+            FROM users
             WHERE Role = 'Admin'
         """)
 
@@ -217,7 +217,7 @@ def delete_user(user_id):
 
     # Delete user
     cursor.execute("""
-        DELETE FROM Users
+        DELETE FROM users
         WHERE UserID = %s
     """, (user_id,))
 

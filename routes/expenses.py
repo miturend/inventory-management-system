@@ -49,7 +49,7 @@ def add_expense():
         amount = request.form["amount"]
 
         cursor.execute("""
-            INSERT INTO Expenses
+            INSERT INTO expenses
             (
                 ExpenseDate,
                 Description,

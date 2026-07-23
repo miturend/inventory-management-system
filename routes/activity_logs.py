@@ -18,8 +18,8 @@ def view_activity_logs():
             Users.Username,
             ActivityLogs.Action,
             ActivityLogs.CreatedDate
-        FROM ActivityLogs
-        LEFT JOIN Users
+        FROM activitylogs
+        LEFT JOIN users
             ON ActivityLogs.UserID = Users.UserID
         ORDER BY ActivityLogs.CreatedDate DESC
     """)

@@ -54,7 +54,7 @@ def system_settings():
 
         return redirect(url_for("settings.system_settings"))
 
-    cursor.execute("SELECT * FROM Settings WHERE SettingID = 1")
+    cursor.execute("SELECT * FROM settings WHERE SettingID = 1")
     settings_data = cursor.fetchone()
 
     cursor.close()

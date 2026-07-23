@@ -22,8 +22,8 @@ def view_purchases():
             Purchases.PurchaseDate,
             Purchases.InvoiceNumber,
             Purchases.Notes
-        FROM Purchases
-        INNER JOIN Suppliers
+        FROM purchases
+        INNER JOIN suppliers
             ON Purchases.SupplierID = Suppliers.SupplierID
         ORDER BY PurchaseID DESC
     """)
@@ -56,7 +56,7 @@ def add_purchase():
         notes = request.form["notes"]
 
         cursor.execute("""
-            INSERT INTO Purchases
+            INSERT INTO purchases
             (
                 SupplierID,
                 PurchaseDate,
@@ -87,7 +87,7 @@ def add_purchase():
 
     cursor.execute("""
         SELECT *
-        FROM Suppliers
+        FROM suppliers
         ORDER BY SupplierName
     """)
 
@@ -114,7 +114,7 @@ def purchase_items(purchase_id):
 
     cursor.execute("""
         SELECT *
-        FROM Products
+        FROM products
         ORDER BY ProductName
     """)
 
@@ -127,8 +127,8 @@ def purchase_items(purchase_id):
             PurchaseItems.Quantity,
             PurchaseItems.UnitCost,
             PurchaseItems.TotalAmount
-        FROM PurchaseItems
-        INNER JOIN Products
+        FROM purchaseitems
+        INNER JOIN products
             ON PurchaseItems.ProductID = Products.ProductID
         WHERE PurchaseItems.PurchaseID = %s
     """, (purchase_id,))
@@ -163,7 +163,7 @@ def add_purchase_item(purchase_id):
     try:
 
         cursor.execute("""
-            INSERT INTO PurchaseItems
+            INSERT INTO purchaseitems
             (
                 PurchaseID,
                 ProductID,

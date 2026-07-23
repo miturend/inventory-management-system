@@ -21,7 +21,7 @@ def view_customers():
 
         cursor.execute("""
             SELECT *
-            FROM Customers
+            FROM customers
             WHERE CustomerName LIKE %s
             ORDER BY CustomerID DESC
         """, ("%" + search + "%",))
@@ -30,7 +30,7 @@ def view_customers():
 
         cursor.execute("""
             SELECT *
-            FROM Customers
+            FROM customers
             ORDER BY CustomerID DESC
         """)
 
@@ -63,7 +63,7 @@ def add_customer():
         cursor = connection.cursor()
 
         cursor.execute("""
-            INSERT INTO Customers
+            INSERT INTO customers
             (
                 CustomerName,
                 Phone,
@@ -106,7 +106,7 @@ def edit_customer(customer_id):
         address = request.form["address"]
 
         cursor.execute("""
-            UPDATE Customers
+            UPDATE customers
             SET
                 CustomerName = %s,
                 Phone = %s,
@@ -130,7 +130,7 @@ def edit_customer(customer_id):
 
     cursor.execute("""
         SELECT *
-        FROM Customers
+        FROM customers
         WHERE CustomerID = %s
     """, (customer_id,))
 
@@ -156,7 +156,7 @@ def delete_customer(customer_id):
     cursor = connection.cursor()
 
     cursor.execute("""
-        DELETE FROM Customers
+        DELETE FROM customers
         WHERE CustomerID = %s
     """, (customer_id,))
 

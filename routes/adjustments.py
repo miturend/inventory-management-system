@@ -15,7 +15,7 @@ def adjust_stock(product_id):
 
     cursor.execute("""
         SELECT *
-        FROM Products
+        FROM products
         WHERE ProductID=%s
     """, (product_id,))
 

@@ -23,8 +23,8 @@ def view_sales():
             Customers.CustomerName,
             Sales.SaleDate,
             Sales.Notes
-        FROM Sales
-        INNER JOIN Customers
+        FROM sales
+        INNER JOIN customers
             ON Sales.CustomerID = Customers.CustomerID
         ORDER BY Sales.SaleID DESC
     """)
@@ -56,7 +56,7 @@ def add_sale():
         notes = request.form["notes"]
 
         cursor.execute("""
-            INSERT INTO Sales
+            INSERT INTO sales
             (
                 CustomerID,
                 SaleDate,
@@ -84,7 +84,7 @@ def add_sale():
 
     cursor.execute("""
         SELECT *
-        FROM Customers
+        FROM customers
         ORDER BY CustomerName
     """)
 
@@ -113,7 +113,7 @@ def sale_items(sale_id):
         SELECT
             ProductID,
             ProductName
-        FROM Products
+        FROM products
         ORDER BY ProductName
     """)
 
@@ -126,8 +126,8 @@ def sale_items(sale_id):
             SaleItems.Quantity,
             SaleItems.UnitPrice,
             SaleItems.TotalAmount
-        FROM SaleItems
-        INNER JOIN Products
+        FROM saleitems
+        INNER JOIN products
             ON SaleItems.ProductID = Products.ProductID
         WHERE SaleItems.SaleID = %s
     """, (sale_id,))
@@ -162,7 +162,7 @@ def add_sale_item(sale_id):
     try:
 
         cursor.execute("""
-            INSERT INTO SaleItems
+            INSERT INTO saleitems
             (
                 SaleID,
                 ProductID,

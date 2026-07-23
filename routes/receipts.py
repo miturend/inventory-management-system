@@ -23,8 +23,8 @@ def sale_receipt(sale_id):
             Sales.SaleDate,
             Sales.Notes,
             Customers.CustomerName
-        FROM Sales
-        INNER JOIN Customers
+        FROM sales
+        INNER JOIN customers
             ON Sales.CustomerID = Customers.CustomerID
         WHERE Sales.SaleID=%s
     """, (sale_id,))
@@ -38,8 +38,8 @@ def sale_receipt(sale_id):
             SaleItems.Quantity,
             SaleItems.UnitPrice,
             SaleItems.TotalAmount
-        FROM SaleItems
-        INNER JOIN Products
+        FROM saleitems
+        INNER JOIN products
             ON SaleItems.ProductID=Products.ProductID
         WHERE SaleItems.SaleID=%s
     """, (sale_id,))
@@ -71,8 +71,8 @@ def receipt_pdf(sale_id):
             Sales.SaleDate,
             Sales.Notes,
             Customers.CustomerName
-        FROM Sales
-        INNER JOIN Customers
+        FROM sales
+        INNER JOIN customers
             ON Sales.CustomerID = Customers.CustomerID
         WHERE Sales.SaleID=%s
     """, (sale_id,))
@@ -85,8 +85,8 @@ def receipt_pdf(sale_id):
             SaleItems.Quantity,
             SaleItems.UnitPrice,
             SaleItems.TotalAmount
-        FROM SaleItems
-        INNER JOIN Products
+        FROM saleitems
+        INNER JOIN products
             ON SaleItems.ProductID=Products.ProductID
         WHERE SaleItems.SaleID=%s
     """, (sale_id,))

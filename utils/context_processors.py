@@ -7,7 +7,7 @@ def inject_settings():
 
     cursor.execute("""
         SELECT *
-        FROM Settings
+        FROM settings
         WHERE SettingID = 1
     """)
 

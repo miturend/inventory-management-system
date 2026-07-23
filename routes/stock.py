@@ -22,9 +22,9 @@ def stock_history():
             StockMovements.Description,
             StockMovements.CreatedDate
         FROM StockMovements
-        INNER JOIN Products
+        INNER JOIN products
             ON StockMovements.ProductID = Products.ProductID
-        LEFT JOIN Users
+        LEFT JOIN users
             ON StockMovements.UserID = Users.UserID
         ORDER BY StockMovements.CreatedDate DESC
     """)

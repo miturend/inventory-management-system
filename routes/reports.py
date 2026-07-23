@@ -32,10 +32,10 @@ def view_reports():
                     Sales.SaleDate,
                     Customers.CustomerName,
                     SUM(SaleItems.TotalAmount) AS Total
-                FROM Sales
-                INNER JOIN Customers
+                FROM sales
+                INNER JOIN customers
                     ON Sales.CustomerID = Customers.CustomerID
-                INNER JOIN SaleItems
+                INNER JOIN saleitems
                     ON Sales.SaleID = SaleItems.SaleID
                 WHERE Sales.SaleDate BETWEEN %s AND %s
                 GROUP BY Sales.SaleID
@@ -47,8 +47,8 @@ def view_reports():
             cursor.execute("""
                 SELECT
                     IFNULL(SUM(SaleItems.TotalAmount),0) AS total_sales
-                FROM Sales
-                INNER JOIN SaleItems
+                FROM sales
+                INNER JOIN saleitems
                     ON Sales.SaleID = SaleItems.SaleID
                 WHERE Sales.SaleDate BETWEEN %s AND %s
             """, (start_date, end_date))
@@ -65,10 +65,10 @@ def view_reports():
                     Purchases.PurchaseDate AS SaleDate,
                     Suppliers.SupplierName AS CustomerName,
                     SUM(PurchaseItems.TotalAmount) AS Total
-                FROM Purchases
-                INNER JOIN Suppliers
+                FROM purchases
+                INNER JOIN suppliers
                     ON Purchases.SupplierID = Suppliers.SupplierID
-                INNER JOIN PurchaseItems
+                INNER JOIN purchaseitems
                     ON Purchases.PurchaseID = PurchaseItems.PurchaseID
                 WHERE Purchases.PurchaseDate BETWEEN %s AND %s
                 GROUP BY Purchases.PurchaseID
@@ -80,8 +80,8 @@ def view_reports():
             cursor.execute("""
                 SELECT
                     IFNULL(SUM(PurchaseItems.TotalAmount),0) AS total_sales
-                FROM Purchases
-                INNER JOIN PurchaseItems
+                FROM purchases
+                INNER JOIN purchaseitems
                     ON Purchases.PurchaseID = PurchaseItems.PurchaseID
                 WHERE Purchases.PurchaseDate BETWEEN %s AND %s
             """, (start_date, end_date))
@@ -120,7 +120,7 @@ def view_reports():
                 SELECT
                     ProductName,
                     Stock
-                FROM Products
+                FROM products
                 WHERE Stock <= 10
                 ORDER BY Stock ASC
             """)
@@ -137,8 +137,8 @@ def view_reports():
             # Total Sales
             cursor.execute("""
                 SELECT IFNULL(SUM(SaleItems.TotalAmount),0) AS sales
-                FROM Sales
-                INNER JOIN SaleItems
+                FROM sales
+                INNER JOIN saleitems
                     ON Sales.SaleID = SaleItems.SaleID
                 WHERE Sales.SaleDate BETWEEN %s AND %s
             """, (start_date, end_date))
@@ -148,8 +148,8 @@ def view_reports():
             # Total Purchases
             cursor.execute("""
                 SELECT IFNULL(SUM(PurchaseItems.TotalAmount),0) AS purchases
-                FROM Purchases
-                INNER JOIN PurchaseItems
+                FROM purchases
+                INNER JOIN purchaseitems
                     ON Purchases.PurchaseID = PurchaseItems.PurchaseID
                 WHERE Purchases.PurchaseDate BETWEEN %s AND %s
             """, (start_date, end_date))

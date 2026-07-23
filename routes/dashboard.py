@@ -18,25 +18,25 @@ def view_dashboard():
 
     cursor.execute("""
         SELECT COUNT(*) AS total_products
-        FROM Products
+        FROM products
     """)
     total_products = cursor.fetchone()["total_products"]
 
     cursor.execute("""
         SELECT COUNT(*) AS total_customers
-        FROM Customers
+        FROM customers
     """)
     total_customers = cursor.fetchone()["total_customers"]
 
     cursor.execute("""
         SELECT COUNT(*) AS total_suppliers
-        FROM Suppliers
+        FROM suppliers
     """)
     total_suppliers = cursor.fetchone()["total_suppliers"]
 
     cursor.execute("""
         SELECT IFNULL(SUM(Stock),0) AS total_stock
-        FROM Products
+        FROM products
     """)
     total_stock = cursor.fetchone()["total_stock"]
 
@@ -44,7 +44,7 @@ def view_dashboard():
         SELECT
             ProductName,
             Stock
-        FROM Products
+        FROM products
         WHERE Stock <= 5
         ORDER BY Stock ASC
     """)
@@ -57,8 +57,8 @@ def view_dashboard():
 
     cursor.execute("""
         SELECT IFNULL(SUM(TotalAmount),0) AS today_sales
-        FROM SaleItems
-        INNER JOIN Sales
+        FROM saleitems
+        INNER JOIN sales
         ON SaleItems.SaleID = Sales.SaleID
         WHERE Sales.SaleDate = CURDATE()
     """)
@@ -71,8 +71,8 @@ def view_dashboard():
 
     cursor.execute("""
         SELECT IFNULL(SUM(TotalAmount),0) AS today_purchases
-        FROM PurchaseItems
-        INNER JOIN Purchases
+        FROM purchaseitems
+        INNER JOIN purchases
         ON PurchaseItems.PurchaseID = Purchases.PurchaseID
         WHERE Purchases.PurchaseDate = CURDATE()
     """)
@@ -107,7 +107,7 @@ def view_dashboard():
 
     cursor.execute("""
         SELECT COUNT(*) AS low_stock
-        FROM Products
+        FROM products
         WHERE Stock <= 10
     """)
 
@@ -116,8 +116,8 @@ def view_dashboard():
     # Today's Sales
     cursor.execute("""
         SELECT IFNULL(SUM(SaleItems.TotalAmount),0) AS today_sales
-        FROM Sales
-        INNER JOIN SaleItems
+        FROM sales
+        INNER JOIN saleitems
             ON Sales.SaleID = SaleItems.SaleID
         WHERE SaleDate = CURDATE()
     """)
@@ -126,8 +126,8 @@ def view_dashboard():
     # Monthly Sales
     cursor.execute("""
         SELECT IFNULL(SUM(SaleItems.TotalAmount),0) AS monthly_sales
-        FROM Sales
-        INNER JOIN SaleItems
+        FROM sales
+        INNER JOIN saleitems
             ON Sales.SaleID = SaleItems.SaleID
         WHERE MONTH(SaleDate)=MONTH(CURDATE())
           AND YEAR(SaleDate)=YEAR(CURDATE())
@@ -148,8 +148,8 @@ def view_dashboard():
         SELECT
             Products.ProductName,
             SUM(SaleItems.Quantity) AS TotalSold
-        FROM SaleItems
-        INNER JOIN Products
+        FROM saleitems
+        INNER JOIN products
             ON SaleItems.ProductID = Products.ProductID
         GROUP BY Products.ProductID
         ORDER BY TotalSold DESC

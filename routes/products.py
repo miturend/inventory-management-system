@@ -27,7 +27,7 @@ def view_products():
                 ProductName,
                 SellingPrice,
                 Stock
-            FROM Products
+            FROM products
             WHERE ProductName LIKE %s
             ORDER BY ProductID DESC
         """, ("%" + search + "%",))
@@ -40,7 +40,7 @@ def view_products():
                 ProductName,
                 SellingPrice,
                 Stock
-            FROM Products
+            FROM products
             ORDER BY ProductID DESC
         """)
 
@@ -152,7 +152,7 @@ def edit_product(product_id):
 
     cursor.execute("""
         SELECT *
-        FROM Products
+        FROM products
         WHERE ProductID = %s
     """, (product_id,))
 
@@ -181,7 +181,7 @@ def delete_product(product_id):
 
     cursor.execute("""
         SELECT ProductName
-        FROM Products
+        FROM products
         WHERE ProductID = %s
     """, (product_id,))
 
@@ -190,7 +190,7 @@ def delete_product(product_id):
 
 
     cursor.execute("""
-        DELETE FROM Products
+        DELETE FROM products
         WHERE ProductID = %s
     """, (product_id,))
 
