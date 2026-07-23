@@ -14,10 +14,32 @@ from routes.backup import backup
 from routes.stock import stock
 from routes.adjustments import adjustments
 from routes.receipts import receipts
+from routes.settings import settings
 
 app = Flask(__name__)
 
 app.secret_key = "okeysam_inventory_secret"
+@app.context_processor
+def inject_settings():
+    from database import get_connection
+
+    connection = get_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT *
+        FROM Settings
+        WHERE SettingID = 1
+    """)
+
+    settings = cursor.fetchone()
+
+    cursor.close()
+    connection.close()
+
+    return {
+        "system_settings": settings
+    }
 
 app.register_blueprint(auth)
 app.register_blueprint(products)
@@ -34,7 +56,10 @@ app.register_blueprint(backup)
 app.register_blueprint(stock)
 app.register_blueprint(adjustments)
 app.register_blueprint(receipts)
+app.register_blueprint(settings)
+
+import os
 
 if __name__ == "__main__":
-    app.run(debug=True)
-    
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
