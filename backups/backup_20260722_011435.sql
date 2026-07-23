@@ -240,7 +240,7 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trg_AfterPurchaseItem` AFTER INSERT ON `purchaseitems` FOR EACH ROW BEGIN
-    UPDATE Products
+    UPDATE products
     SET Stock = Stock + NEW.Quantity
     WHERE ProductID = NEW.ProductID;
 END */;;
@@ -343,7 +343,7 @@ DELIMITER ;;
 
     SELECT Stock
     INTO currentStock
-    FROM Products
+    FROM products
     WHERE ProductID = NEW.ProductID;
 
     IF currentStock < NEW.Quantity THEN
@@ -366,7 +366,7 @@ DELIMITER ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trg_AfterSaleItem` AFTER INSERT ON `saleitems` FOR EACH ROW BEGIN
-    UPDATE Products
+    UPDATE products
     SET Stock = Stock - NEW.Quantity
     WHERE ProductID = NEW.ProductID;
 END */;;

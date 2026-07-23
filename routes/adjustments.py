@@ -27,7 +27,7 @@ def adjust_stock(product_id):
         reason = request.form["reason"]
 
         cursor.execute("""
-            UPDATE Products
+            UPDATE products
             SET Stock = Stock + %s
             WHERE ProductID=%s
         """, (

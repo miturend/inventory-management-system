@@ -74,7 +74,7 @@ def add_product():
         cursor = connection.cursor()
 
         cursor.execute("""
-            INSERT INTO Products
+            INSERT INTO products
             (
                 ProductName,
                 SellingPrice,
@@ -123,7 +123,7 @@ def edit_product(product_id):
         stock = request.form["stock"]
 
         cursor.execute("""
-            UPDATE Products
+            UPDATE products
             SET
                 ProductName = %s,
                 SellingPrice = %s,
