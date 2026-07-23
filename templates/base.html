@@ -41,7 +41,7 @@
 
     <i class="bi bi-box-seam-fill text-primary"></i>
 
-    OKEYSAM Inventory
+    {{ system_settings.BusinessName if system_settings is defined else "OKEYSAM Inventory" }}
 
 </span>
 
@@ -72,15 +72,19 @@
 
     <h4 class="mt-2 mb-0">
 
-        OKEYSAM
+        {{ system_settings.BusinessName }}
 
-    </h4>
+    <h4 class="mt-2 mb-0">
 
-    <small class="text-secondary">
+    {{ system_settings.BusinessName }}
 
-        Inventory System
+</h4>
 
-    </small>
+<small class="text-secondary">
+
+    Inventory Management System
+
+</small>
 
 </div>
 
@@ -151,11 +155,13 @@
 
             </a>
 
-            <a class="sidebar-link {% if request.endpoint == 'users.view_users' %}active{% endif %}"
-                href="{{ url_for('users.view_users') }}">
-            <i class="bi bi-person"></i>
+            {% if session.get("role") == "Admin" %}
+<a class="sidebar-link {% if request.endpoint == 'users.view_users' %}active{% endif %}"
+   href="{{ url_for('users.view_users') }}">
+    <i class="bi bi-person"></i>
     Users
-    </a>
+</a>
+{% endif %}
 
             {% if session.get("role")=="Admin" %}
 
@@ -170,14 +176,16 @@
 
             {% endif %}
 
-            <a class="sidebar-link {% if request.endpoint == 'backup.view_backup' %}active{% endif %}"
-               href="{{ url_for('backup.view_backup') }}">
+            {% if session.get("role") == "Admin" %}
+<a class="sidebar-link {% if request.endpoint == 'backup.view_backup' %}active{% endif %}"
+   href="{{ url_for('backup.view_backup') }}">
 
-                <i class="bi bi-database"></i>
+    <i class="bi bi-database"></i>
 
-                Backup
+    Backup
 
-            </a>
+</a>
+{% endif %}
 
             <a class="sidebar-link {% if request.endpoint == 'stock.stock_history' %}active{% endif %}"
                href="{{ url_for('stock.stock_history') }}">
@@ -187,6 +195,16 @@
                 Stock History
 
             </a>
+            {% if session.get("role") == "Admin" %}
+<a class="sidebar-link {% if request.endpoint == 'settings.system_settings' %}active{% endif %}"
+   href="{{ url_for('settings.system_settings') }}">
+
+    <i class="bi bi-gear-fill"></i>
+
+    System Settings
+
+</a>
+{% endif %}
 
         </div>
 

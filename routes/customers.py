@@ -101,7 +101,7 @@ def edit_customer(customer_id):
 
     if request.method == "POST":
 
-        name = request.form["name"]
+        name = request.form["customer_name"]
         phone = request.form["phone"]
         address = request.form["address"]
 

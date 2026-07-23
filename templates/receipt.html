@@ -10,9 +10,17 @@ Receipt
 
     <div class="text-center">
 
-        <h2>OKEYSAM INVENTORY SYSTEM</h2>
+        <h2>{{ system_settings.BusinessName }}</h2>
 
-        <h4>SALES RECEIPT</h4>
+        <p>{{ system_settings.BusinessAddress }}</p>
+
+        <p>
+            Phone: {{ system_settings.Phone }}
+            <br>
+            Email: {{ system_settings.Email }}
+        </p>
+
+        <h4 class="mt-3">SALES RECEIPT</h4>
 
     </div>
 
@@ -30,37 +38,37 @@ Receipt
 
         <thead class="table-dark">
 
-        <tr>
+            <tr>
 
-            <th>Product</th>
+                <th>Product</th>
 
-            <th>Qty</th>
+                <th>Qty</th>
 
-            <th>Unit Price</th>
+                <th>Unit Price</th>
 
-            <th>Total</th>
+                <th>Total</th>
 
-        </tr>
+            </tr>
 
         </thead>
 
         <tbody>
 
-        {% for item in items %}
+            {% for item in items %}
 
-        <tr>
+            <tr>
 
-            <td>{{ item.ProductName }}</td>
+                <td>{{ item.ProductName }}</td>
 
-            <td>{{ item.Quantity }}</td>
+                <td>{{ item.Quantity }}</td>
 
-            <td>₦{{ "{:,.2f}".format(item.UnitPrice) }}</td>
+                <td>{{ system_settings.CurrencySymbol }}{{ "{:,.2f}".format(item.UnitPrice) }}</td>
 
-            <td>₦{{ "{:,.2f}".format(item.TotalAmount) }}</td>
+                <td>{{ system_settings.CurrencySymbol }}{{ "{:,.2f}".format(item.TotalAmount) }}</td>
 
-        </tr>
+            </tr>
 
-        {% endfor %}
+            {% endfor %}
 
         </tbody>
 
@@ -69,7 +77,7 @@ Receipt
     <h3 class="text-end">
 
         Total :
-        ₦{{ "{:,.2f}".format(total) }}
+        {{ system_settings.CurrencySymbol }}{{ "{:,.2f}".format(total) }}
 
     </h3>
 
@@ -77,7 +85,11 @@ Receipt
 
     <div class="text-center">
 
-        <div class="text-center">
+        <strong>{{ system_settings.ReceiptFooter }}</strong>
+
+    </div>
+
+    <br>
 
     <button
         class="btn btn-primary"
@@ -95,10 +107,6 @@ Receipt
         📄 Download PDF
 
     </a>
-
-</div>
-
-    </div>
 
 </div>
 
