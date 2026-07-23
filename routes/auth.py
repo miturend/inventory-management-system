@@ -18,7 +18,7 @@ def login():
 
         cursor.execute("""
             SELECT *
-            FROM Users
+            FROM users
             WHERE Username = %s
         """, (username,))
 
