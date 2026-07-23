@@ -13,22 +13,21 @@ def stock_history():
     cursor = connection.cursor(dictionary=True)
 
     cursor.execute("""
-        SELECT
-            StockMovements.MovementID,
-            products.ProductName,
-            users.Username,
-            StockMovements.MovementType,
-            StockMovements.Quantity,
-            StockMovements.Description,
-            StockMovements.CreatedDate
-        FROM StockMovements
-        INNER JOIN products
-            ON StockMovements.ProductID = products.ProductID
-        LEFT JOIN users
-            ON StockMovements.UserID = users.UserID
-        ORDER BY StockMovements.CreatedDate DESC
-    """)
-    
+    SELECT
+        stockmovements.MovementID,
+        products.ProductName,
+        users.Username,
+        stockmovements.MovementType,
+        stockmovements.Quantity,
+        stockmovements.Description,
+        stockmovements.CreatedDate
+    FROM stockmovements
+    INNER JOIN products
+        ON stockmovements.ProductID = products.ProductID
+    LEFT JOIN users
+        ON stockmovements.UserID = users.UserID
+    ORDER BY stockmovements.CreatedDate DESC
+""")
 
     movements = cursor.fetchall()
 
