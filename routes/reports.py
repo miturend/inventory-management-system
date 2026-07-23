@@ -30,11 +30,11 @@ def view_reports():
             cursor.execute("""
                 SELECT
                     sales.SaleDate,
-                    Customers.CustomerName,
+                    customers.CustomerName,
                     SUM(saleitems.TotalAmount) AS Total
                 FROM sales
                 INNER JOIN customers
-                    ON Sales.CustomerID = Customers.CustomerID
+                    ON Sales.CustomerID = customers.CustomerID
                 INNER JOIN saleitems
                     ON Sales.SaleID = saleitems.SaleID
                 WHERE sales.SaleDate BETWEEN %s AND %s
@@ -62,17 +62,17 @@ def view_reports():
 
             cursor.execute("""
                 SELECT
-                    Purchases.PurchaseDate AS SaleDate,
-                    Suppliers.SupplierName AS CustomerName,
+                    purchases.PurchaseDate AS SaleDate,
+                    suppliers.SupplierName AS CustomerName,
                     SUM(PurchaseItems.TotalAmount) AS Total
                 FROM purchases
                 INNER JOIN suppliers
-                    ON Purchases.SupplierID = Suppliers.SupplierID
+                    ON purchases.SupplierID = suppliers.SupplierID
                 INNER JOIN purchaseitems
-                    ON Purchases.PurchaseID = PurchaseItems.PurchaseID
-                WHERE Purchases.PurchaseDate BETWEEN %s AND %s
-                GROUP BY Purchases.PurchaseID
-                ORDER BY Purchases.PurchaseDate DESC
+                    ON purchases.PurchaseID = PurchaseItems.PurchaseID
+                WHERE purchases.PurchaseDate BETWEEN %s AND %s
+                GROUP BY purchases.PurchaseID
+                ORDER BY purchases.PurchaseDate DESC
             """, (start_date, end_date))
 
             sales = cursor.fetchall()
@@ -82,8 +82,8 @@ def view_reports():
                     IFNULL(SUM(PurchaseItems.TotalAmount),0) AS total_sales
                 FROM purchases
                 INNER JOIN purchaseitems
-                    ON Purchases.PurchaseID = PurchaseItems.PurchaseID
-                WHERE Purchases.PurchaseDate BETWEEN %s AND %s
+                    ON purchases.PurchaseID = PurchaseItems.PurchaseID
+                WHERE purchases.PurchaseDate BETWEEN %s AND %s
             """, (start_date, end_date))
 
             total_sales = cursor.fetchone()["total_sales"]
@@ -150,8 +150,8 @@ def view_reports():
                 SELECT IFNULL(SUM(PurchaseItems.TotalAmount),0) AS purchases
                 FROM purchases
                 INNER JOIN purchaseitems
-                    ON Purchases.PurchaseID = PurchaseItems.PurchaseID
-                WHERE Purchases.PurchaseDate BETWEEN %s AND %s
+                    ON purchases.PurchaseID = PurchaseItems.PurchaseID
+                WHERE purchases.PurchaseDate BETWEEN %s AND %s
             """, (start_date, end_date))
 
             total_purchase_amount = cursor.fetchone()["purchases"]

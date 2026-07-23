@@ -17,14 +17,14 @@ def view_purchases():
 
     cursor.execute("""
         SELECT
-            Purchases.PurchaseID,
-            Suppliers.SupplierName,
-            Purchases.PurchaseDate,
-            Purchases.InvoiceNumber,
-            Purchases.Notes
+            purchases.PurchaseID,
+            suppliers.SupplierName,
+            purchases.PurchaseDate,
+            purchases.InvoiceNumber,
+            purchases.Notes
         FROM purchases
         INNER JOIN suppliers
-            ON Purchases.SupplierID = Suppliers.SupplierID
+            ON purchases.SupplierID = suppliers.SupplierID
         ORDER BY PurchaseID DESC
     """)
 
@@ -123,13 +123,13 @@ def purchase_items(purchase_id):
     cursor.execute("""
         SELECT
             PurchaseItems.PurchaseItemID,
-            Products.ProductName,
+            products.ProductName,
             PurchaseItems.Quantity,
             PurchaseItems.UnitCost,
             PurchaseItems.TotalAmount
         FROM purchaseitems
         INNER JOIN products
-            ON PurchaseItems.ProductID = Products.ProductID
+            ON PurchaseItems.ProductID = products.ProductID
         WHERE PurchaseItems.PurchaseID = %s
     """, (purchase_id,))
 

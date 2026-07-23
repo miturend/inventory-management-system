@@ -20,12 +20,12 @@ def view_sales():
     cursor.execute("""
         SELECT
             Sales.SaleID,
-            Customers.CustomerName,
+            customers.CustomerName,
             sales.SaleDate,
             Sales.Notes
         FROM sales
         INNER JOIN customers
-            ON Sales.CustomerID = Customers.CustomerID
+            ON Sales.CustomerID = customers.CustomerID
         ORDER BY Sales.SaleID DESC
     """)
 
@@ -122,13 +122,13 @@ def sale_items(sale_id):
     cursor.execute("""
         SELECT
             saleitems.SaleItemID,
-            Products.ProductName,
+            products.ProductName,
             saleitems.Quantity,
             saleitems.UnitPrice,
             saleitems.TotalAmount
         FROM saleitems
         INNER JOIN products
-            ON saleitems.ProductID = Products.ProductID
+            ON saleitems.ProductID = products.ProductID
         WHERE saleitems.SaleID = %s
     """, (sale_id,))
 

@@ -15,12 +15,12 @@ def view_activity_logs():
     cursor.execute("""
         SELECT
             ActivityLogs.LogID,
-            Users.Username,
+            users.Username,
             ActivityLogs.Action,
             ActivityLogs.CreatedDate
         FROM activitylogs
         LEFT JOIN users
-            ON ActivityLogs.UserID = Users.UserID
+            ON ActivityLogs.UserID = users.UserID
         ORDER BY ActivityLogs.CreatedDate DESC
     """)
 

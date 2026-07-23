@@ -15,17 +15,17 @@ def stock_history():
     cursor.execute("""
         SELECT
             StockMovements.MovementID,
-            Products.ProductName,
-            Users.Username,
+            products.ProductName,
+            users.Username,
             StockMovements.MovementType,
             StockMovements.Quantity,
             StockMovements.Description,
             StockMovements.CreatedDate
         FROM StockMovements
         INNER JOIN products
-            ON StockMovements.ProductID = Products.ProductID
+            ON StockMovements.ProductID = products.ProductID
         LEFT JOIN users
-            ON StockMovements.UserID = Users.UserID
+            ON StockMovements.UserID = users.UserID
         ORDER BY StockMovements.CreatedDate DESC
     """)
 
