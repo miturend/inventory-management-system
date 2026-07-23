@@ -83,7 +83,7 @@ Profit Report
         <tr>
             <th>Date</th>
             <th>Description</th>
-            <th>Total ({{ SYSTEM_SETTINGS.CURRENCYSYMBOL }})</th>
+            <th>Total ({{ system_settings.CURRENCYSYMBOL }})</th>
         </tr>
 
     </thead>
@@ -98,7 +98,7 @@ Profit Report
 
             <td>{{ sale.CustomerName }}</td>
 
-            <td>{{ SYSTEM_SETTINGS.CURRENCYSYMBOL }}{{ "%.2f"|format(sale.Total) }}</td>
+            <td>{{ system_settings.CURRENCYSYMBOL }}{{ "%.2f"|format(sale.Total) }}</td>
 
         </tr>
 
@@ -122,7 +122,7 @@ Profit Report
 
             <span class="text-success">
 
-                {{ SYSTEM_SETTINGS.CURRENCYSYMBOL }}{{ "%.2f"|format(total_sales) }}
+                {{ system_settings.CURRENCYSYMBOL }}{{ "%.2f"|format(total_sales) }}
 
             </span>
 
