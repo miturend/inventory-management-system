@@ -85,7 +85,7 @@ def view_dashboard():
 
     cursor.execute("""
         SELECT IFNULL(SUM(expenses.Amount),0) AS today_expenses
-        FROM Expenses
+        FROM expenses
         WHERE ExpenseDate = CURDATE()
     """)
 
@@ -125,19 +125,19 @@ def view_dashboard():
 
     # Monthly Sales
     cursor.execute("""
-        SELECT IFNULL(SUM(SaleItems.TotalAmount),0) AS monthly_sales
-        FROM sales
-        INNER JOIN saleitems
-            ON Sales.SaleID = SaleItems.SaleID
-        WHERE MONTH(SaleDate)=MONTH(CURDATE())
-          AND YEAR(SaleDate)=YEAR(CURDATE())
-    """)
+    SELECT IFNULL(SUM(saleitems.TotalAmount),0) AS monthly_sales
+    FROM sales
+    INNER JOIN saleitems
+        ON sales.SaleID = saleitems.SaleID
+    WHERE MONTH(sales.SaleDate)=MONTH(CURDATE())
+      AND YEAR(sales.SaleDate)=YEAR(CURDATE())
+""")
     monthly_sales = cursor.fetchone()["monthly_sales"]
 
     # Monthly Expenses
     cursor.execute("""
         SELECT IFNULL(SUM(Amount),0) AS monthly_expenses
-        FROM Expenses
+        FROM expenses
         WHERE MONTH(ExpenseDate)=MONTH(CURDATE())
           AND YEAR(ExpenseDate)=YEAR(CURDATE())
     """)
@@ -145,16 +145,16 @@ def view_dashboard():
 
     # Top 5 Best Selling Products
     cursor.execute("""
-        SELECT
-            Products.ProductName,
-            SUM(SaleItems.Quantity) AS TotalSold
-        FROM saleitems
-        INNER JOIN products
-            ON SaleItems.ProductID = Products.ProductID
-        GROUP BY Products.ProductID
-        ORDER BY TotalSold DESC
-        LIMIT 5
-    """)
+    SELECT
+        products.ProductName,
+        SUM(saleitems.Quantity) AS TotalSold
+    FROM saleitems
+    INNER JOIN products
+        ON saleitems.ProductID = products.ProductID
+    GROUP BY products.ProductID
+    ORDER BY TotalSold DESC
+    LIMIT 5
+""")
     top_products = cursor.fetchall()
     cursor.close()
     connection.close()
