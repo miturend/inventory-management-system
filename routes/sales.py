@@ -19,14 +19,14 @@ def view_sales():
 
     cursor.execute("""
         SELECT
-            Sales.SaleID,
+            sales.SaleID,
             customers.CustomerName,
             sales.SaleDate,
-            Sales.Notes
+            sales.Notes
         FROM sales
         INNER JOIN customers
-            ON Sales.CustomerID = customers.CustomerID
-        ORDER BY Sales.SaleID DESC
+            ON sales.CustomerID = customers.CustomerID
+        ORDER BY sales.SaleID DESC
     """)
 
     sales_list = cursor.fetchall()
