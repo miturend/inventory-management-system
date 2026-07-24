@@ -55,14 +55,7 @@
 
     </div>
 
-    <button
-    id="themeToggle"
-    class="btn btn-outline-light ms-3">
-
-    <i class="bi bi-moon-fill"></i>
-
-</button>
-
+    
 </nav>
 
 <!-- SIDEBAR -->
@@ -210,6 +203,14 @@
 
 </a>
 {% endif %}
+<button
+    id="themeToggle"
+    class="sidebar-link border-0 w-100 text-start">
+
+    <i class="bi bi-moon-fill"></i>
+    Dark Mode
+
+</button>
 
         </div>
 
@@ -286,10 +287,21 @@ btn.addEventListener("click", () => {
 
 function updateIcon(theme){
 
-    btn.innerHTML =
-        theme === "dark"
-        ? '<i class="bi bi-sun-fill"></i>'
-        : '<i class="bi bi-moon-fill"></i>';
+    if(theme === "dark"){
+
+        btn.innerHTML = `
+            <i class="bi bi-sun-fill"></i>
+            Light Mode
+        `;
+
+    }else{
+
+        btn.innerHTML = `
+            <i class="bi bi-moon-fill"></i>
+            Dark Mode
+        `;
+
+    }
 
 }
 </script>
