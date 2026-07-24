@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Customer</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<h1>Add Customer</h1>
+{% block title %}
+Add Customer
+{% endblock %}
+
+{% block content %}
 
 <form method="POST">
 
     <p>Customer Name</p>
-    <input type="text" name="name" required>
+    <input type="text" name="customer_name" required>
 
     <p>Phone</p>
     <input type="tel" name="phone" required>
@@ -24,9 +23,9 @@
 
 </form>
 
+
 <br>
 
 <a href="/customers">← Back to Customers</a>
 
-</body>
-</html>
+{% endblock %}
