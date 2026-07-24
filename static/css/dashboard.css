@@ -1,6 +1,8 @@
 body{
-    background:#f4f6f9;
+    background:var(--bs-body-bg);
+    color:var(--bs-body-color);
     font-family:Segoe UI,sans-serif;
+    transition:background .3s,color .3s;
 }
 
 .offcanvas{
@@ -108,7 +110,11 @@ body{
 }
 .card{
 
-    border:none;
+    background:var(--bs-body-bg);
+
+    color:var(--bs-body-color);
+
+    border:1px solid var(--bs-border-color);
 
     border-radius:16px;
 
@@ -137,8 +143,8 @@ body{
 
     body{
 
-        background:white;
-
+        background: var(--bs-body-bg);
+        color: var(--bs-body-color);
     }
 
     .card{
@@ -148,5 +154,40 @@ body{
         box-shadow:none !important;
 
     }
+
+}
+
+.table{
+    color:var(--bs-body-color);
+}
+.form-control,
+.form-select{
+
+    background:var(--bs-body-bg);
+
+    color:var(--bs-body-color);
+
+    border-color:var(--bs-border-color);
+
+}
+
+.form-control:focus,
+.form-select:focus{
+
+    background:var(--bs-body-bg);
+
+    color:var(--bs-body-color);
+
+}
+
+body,
+.card,
+.navbar,
+.offcanvas,
+.table,
+.form-control,
+.form-select{
+
+    transition:all .3s ease;
 
 }
