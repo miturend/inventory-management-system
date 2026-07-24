@@ -191,3 +191,34 @@ body,
     transition:all .3s ease;
 
 }
+
+#themeToggle{
+
+    background: transparent !important;
+
+    color: white !important;
+
+    border: none !important;
+
+}
+
+#themeToggle:hover{
+
+    background: #374151 !important;
+
+    color: white !important;
+
+    transform: translateX(6px);
+
+}
+
+#themeToggle:focus,
+#themeToggle:active{
+
+    background: #374151 !important;
+
+    color: white !important;
+
+    box-shadow: none !important;
+
+}
